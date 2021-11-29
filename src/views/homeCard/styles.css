@@ -1,0 +1,23 @@
+.card {
+    background-color: #f5f4f4ef;
+    width: 15rem;
+    height: 20rem;
+    padding: 1rem;
+    text-align: start;
+}
+
+.image-container {
+    display: flex;
+    text-align: center;
+}
+
+.card-image {
+    width: 8rem;
+    height: 8rem;
+    margin: 0 auto !important;
+}
+
+.card-text {
+    margin-top: -1rem;
+    color: #696969;
+}

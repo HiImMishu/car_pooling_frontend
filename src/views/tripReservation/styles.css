@@ -1,0 +1,60 @@
+.trip-driver-reservation {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.trip-date-reservation {
+    margin: 0;
+    padding-bottom: 0 !important;
+}
+
+.final-price-section {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 60% 20% 20%;    
+}
+
+.final-price-header {
+    grid-column-start: 1;
+}
+
+.final-price-text {
+    grid-column-start: 1;
+    grid-row-start: 2;
+    margin: 0;
+}
+
+.final-price-footer {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    margin: 0;
+    justify-self: end;
+    align-self: center;
+}
+
+.final-price-hint {
+    grid-column-start: 1;
+    grid-row-start: 3;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+@media only screen and (max-width: 800px) {
+    .trip-reservation-header {
+        font-size: 2rem;  
+    }
+
+    .final-price-section {
+        display: flex; 
+        flex-direction: column;
+    }
+
+    .final-price-footer {
+        align-self: start;
+        margin: 0.83rem 0;
+    }
+    
+}

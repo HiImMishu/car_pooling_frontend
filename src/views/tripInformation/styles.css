@@ -1,0 +1,188 @@
+.trip-container {
+    display: flex !important;
+    flex-direction: column;
+}
+
+.trip-header-date {
+    align-self: center;
+    font-size: 2.5rem;
+    color: #444444;
+    font-weight: 700;
+    text-align: center;
+}
+
+.trip-divider {
+    height: 7px !important;
+}
+
+.price-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 24px;
+}
+
+.price-text {
+    padding: 0;
+    margin: 0;
+    color: #696969;
+}
+
+.add-info-text {
+    padding: 0;
+    margin: 0;
+    font-weight: 400;
+}
+
+.trip-driver, .passanger {
+    margin: 12px 0 0;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+.navigate-user {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    color: #696969;
+}
+
+.trip-driver:hover, .passanger:hover {
+    background-color: #cccccc;
+}
+
+.trip-padding {
+    padding: 24px;
+}
+
+.add-info-section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.add-info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+.car-section {
+    display: flex;
+    flex: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.car-brand {
+    margin: 0 0 0.5rem 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+.car-icon {
+    font-size: 4rem !important;
+}
+
+.driver-contact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
+    cursor: pointer;
+    margin: 12px 0;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #4990e0;
+}
+
+.driver-contact:hover {
+    background-color: #cccccc;
+}
+
+.chat-icon {
+    font-size: 2rem;
+}
+
+.passanger-heading {
+    margin: 0 0 1rem;
+    padding-bottom: 0;
+}
+
+.passanger {
+    margin: 0;
+    flex-basis: 80%;
+}
+
+.passangers-section{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0 2rem 0;
+}
+
+.header-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.action-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+ }
+
+ .passanger-row {
+    display: flex;
+    flex-direction: row;
+ }
+
+ .button-container-row {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.2rem;
+    justify-content: center;
+ }
+
+@media only screen and (max-width: 800px) {
+    .price-section {
+        padding: 0;    
+    }
+
+    .header-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+
+    .action-button-container {
+        row-gap: 0.8rem;
+     }
+
+    .passanger-row {
+        flex-direction: column;
+    }
+
+    .passanger {
+        padding: 12px 0;
+    }
+
+    .button-container-row {
+        flex-direction: row;
+        column-gap: 0.5rem;
+        justify-content: center;
+    }
+}

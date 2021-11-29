@@ -1,0 +1,74 @@
+.add-trip-button-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 2.5rem;
+}
+
+.standard-stepper, .add-trip-button-container {
+    display: flex;
+}
+
+.mobile-stepper {
+    display: none !important;
+}
+
+.trip-locations-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+}
+
+.add-stop-input-row, .add-date-input-row {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+.trip-stops-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-stop-item:hover, .trip-date-item:hover {
+    background-color: #cccccc;;
+}
+
+.trip-date-time {
+    width: 20rem !important;
+}
+
+.trip-options-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+@media only screen and (max-width: 800px) {
+    .standard-stepper, .add-trip-button-container {
+        display: none !important;
+    }
+
+    .mobile-stepper {
+        display: flex !important;
+        width: auto;
+        margin: 1rem 0;
+    }
+
+    .trip-locations-container {
+        flex-direction: column;
+    }
+
+    .mb-width {
+        width: 100%;
+    }
+
+    .add-date-input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: 1rem;
+    }
+}

@@ -1,0 +1,53 @@
+.user-profile-secondary-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: start;
+    row-gap: 0.2rem;
+}
+
+.user-secondary-info-item {
+    font-size: 1.2rem;
+    grid-template-columns: 1fr;
+}
+
+.seat-icon, .list-icon {
+    color: #2c4aaf;
+}
+
+.tick-icon {
+    color: #199215;
+}
+
+.profile-action-container {
+    display: flex;
+    justify-content: start;
+}
+
+.update-user-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.7rem;
+}
+
+@media only screen and (max-width: 800px) {
+    .user-secondary-info-item {
+        font-size: 1rem;
+    }
+
+    p.user-secondary-info-item {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .user-full-heading {
+        font-size: 1.6rem;
+    }
+
+    .trip-driver {
+        padding: 12px 0;
+    }
+
+    .profile-action-button {
+        flex-basis: 100%;
+    }
+}

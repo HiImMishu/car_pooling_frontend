@@ -1,0 +1,1 @@
+export const testData = state => state.testReducer.values

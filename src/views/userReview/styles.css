@@ -1,0 +1,23 @@
+.review {
+    margin: 1rem 0;
+}
+
+.reviewer-avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.75rem;
+}
+
+.review-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+}
+
+.review-title {
+    font-weight: 500;
+}
+
+.review-date {
+    font-size: 0.8rem;
+}

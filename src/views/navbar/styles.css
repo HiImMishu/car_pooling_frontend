@@ -1,0 +1,14 @@
+.nav-icon {
+    margin-right: 0.2rem;
+}
+
+.navbar {
+    min-width: 100%;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+}

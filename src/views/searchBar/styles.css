@@ -1,0 +1,43 @@
+.root {
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin: 2rem 0;
+    z-index: 100;
+}
+
+.input {
+    margin-left: 0.2rem !important;
+    margin-right: 0.5rem !important;
+    flex: 1;
+    max-width: 12rem;
+}
+
+.divider {
+    height: 2.5rem;
+    margin: 0.5rem;
+}
+
+.icon {
+    margin-left: 0.5rem !important;
+}
+
+.form-element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media only screen and (max-width: 800px) {
+    .root {
+      flex-direction: column;
+      position: relative;
+      top: 1rem;
+    }
+
+    .form-element {
+        margin: 8px 0;
+    }
+}

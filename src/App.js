@@ -16,6 +16,8 @@ import UserTripsComponent from './views/userTrips/userTripsComponent';
 import UpdateTripComponent from './views/updateTrip/UpdateTripComponent';
 import UserProfileComponent from './views/userProfile/userProfileComponent';
 import MessagesComponent from './views/messages/messagesComponent';
+import LoginComponent from './views/login/loginComponent';
+import RegisterUserComponent from './views/register/registerUserComponent';
 
 function App() {
   const data = useSelector(testData)
@@ -63,6 +65,12 @@ function App() {
             </Route>
             <Route exact path="/messages">
               <MessagesComponent/>
+            </Route>
+            <Route exact path="/login">
+              <LoginComponent/>
+            </Route>
+            <Route exact path="/register">
+              <RegisterUserComponent/>
             </Route>
         </Switch>
       </Router>

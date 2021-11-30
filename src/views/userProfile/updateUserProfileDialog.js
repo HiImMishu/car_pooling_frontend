@@ -53,7 +53,6 @@ const UpdateUserProfileDialog = ({isOpen, setIsOpen}) => {
             e.target.valid = true
             e.target.setCustomValidity("")
         }
-        console.log(userState.phoneNumber)
         if (!isNaN(phoneNumber) && phoneNumber.length <= 9) {
             setUserState(prevState => ({
                 ...prevState,
@@ -130,7 +129,6 @@ const UpdateUserProfileDialog = ({isOpen, setIsOpen}) => {
                     id="outlined-basic" 
                     label="Samochód" 
                     variant="outlined"
-                    required
                 />
                 <TextField 
                     value={userState.carColor}
@@ -140,7 +138,6 @@ const UpdateUserProfileDialog = ({isOpen, setIsOpen}) => {
                     id="outlined-basic" 
                     label="Kolor samochodu" 
                     variant="outlined"
-                    required
                 />
                 <DialogActions>
                     <Button type="submit" color="primary">Zapisz</Button>

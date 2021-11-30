@@ -115,8 +115,8 @@ const Navbar = () => {
     )
     const menuItemsUnLogged = (
         [
-            <MenuItem key={1} onClick={handleMenuClose}>Logowanie</MenuItem>,
-            <MenuItem key={2} onClick={handleMenuClose}>Rejestracja</MenuItem>
+            <MenuItem key={1} component={Link} to="/login" onClick={handleMenuClose}>Logowanie</MenuItem>,
+            <MenuItem key={2} component={Link} to="/register" onClick={handleMenuClose}>Rejestracja</MenuItem>
         ]
     )
     const renderMenu = (

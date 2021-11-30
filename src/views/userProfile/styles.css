@@ -20,7 +20,7 @@
 
 .profile-action-container {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
 }
 
 .update-user-form {

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 const AddUserAuthenticationDataComponent = ({setValid, state, setFormState}) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
-    const emailAlreadyTaken = false
 
     useEffect(() => {
         let isValid = state.email !== "" &&
@@ -20,6 +19,12 @@ const AddUserAuthenticationDataComponent = ({setValid, state, setFormState}) => 
             ...prevState,
             [event.target.name]: event.target.value
         }))
+        if (event.target.name === 'email') {
+            setFormState(prevState => ({
+                ...prevState,
+                emailTaken: false
+            }))
+        }
     }
 
     const isEmailValid = (email) => {
@@ -44,7 +49,7 @@ const AddUserAuthenticationDataComponent = ({setValid, state, setFormState}) => 
                 type="email"
             />
         </div>
-        {emailAlreadyTaken && <p className="email-taken">Podany adres email jest już zarejestrowany w systemie.</p>}
+        {state.emailTaken && <p className="email-taken">Podany adres email jest już zarejestrowany w systemie.</p>}
         <div className="form-element mt-1 mb-1">
             <LockOutlined className="login-icon" fontSize="large"/>
             <FormControl variant="outlined" className="form-field" required>

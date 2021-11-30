@@ -1,5 +1,7 @@
-import testMiddleware from './testMiddleware'
+import testMiddleware from './testMiddleware';
+import userMiddleware from './userMiddleware';
 
 export default [
-    ...testMiddleware
+    ...testMiddleware,
+    ...userMiddleware
 ]

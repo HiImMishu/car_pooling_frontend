@@ -1,8 +1,7 @@
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { testData } from './application/selectors/testSelector';
-import { useEffect } from 'react';
-import { getTestData } from './application/actions/testActions';
+import { alertSelector } from './application/selectors/alertSelector';
+import React from 'react';
 import HomeComponent from './views/home/homeComponent';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './views/navbar/navbar';
@@ -18,19 +17,50 @@ import UserProfileComponent from './views/userProfile/userProfileComponent';
 import MessagesComponent from './views/messages/messagesComponent';
 import LoginComponent from './views/login/loginComponent';
 import RegisterUserComponent from './views/register/registerUserComponent';
+import { IconButton, Slide, Snackbar } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import MuiAlert from '@material-ui/lab/Alert';
+import { closeAlert } from './application/actions/alertActions';
 
 function App() {
-  const data = useSelector(testData)
-  const dispatch = useDispatch();
+  const alert = useSelector(alertSelector)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    setTimeout(dispatch(getTestData), 5000)
-  }, [dispatch])
+  const hideAlert = () => {
+    dispatch(closeAlert)
+  }
 
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />
+  }
 
   return (
     <div className="main">
       <Router>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}    
+          open={alert.open}
+          onClose={() => hideAlert()}
+          autoHideDuration={6000}
+          TransitionComponent={Slide.name}
+        >
+          <Alert 
+            severity={alert.type}
+            action={
+              <React.Fragment>
+                {alert.button}
+                <IconButton size="small" aria-label="close" color="inherit" onClick={() => hideAlert()}>
+                  <Close fontSize="small" />
+                </IconButton>
+              </React.Fragment>
+            }
+          >
+            {alert.message}
+          </Alert>
+        </Snackbar>
         <Navbar/>
         <Switch>
             <Route exact path="/">

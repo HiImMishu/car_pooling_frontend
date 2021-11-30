@@ -1,0 +1,1 @@
+export const registrationResult = state => state.userReducer.response

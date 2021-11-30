@@ -1,6 +1,6 @@
 import { Button, Container, MobileStepper, Step, StepLabel, Stepper, Typography, withStyles } from "@material-ui/core";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
-import { useState } from "react";
+import { ExitToAppOutlined, KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
+import React, { useEffect, useState } from "react";
 import AddAdditionalRegistrationInformationComponent from "./AddAdditionalRegistrationInformationComponent";
 import AddBasicUserDataComponent from "./addBasicUserDataComponent";
 import AddCarInformationComponent from "./addCarInformationComponent";
@@ -12,6 +12,11 @@ import noAnimals from '../../assets/images/no-animals.png';
 import noSmoking from '../../assets/images/no-smoking.png';
 import chat from '../../assets/images/chat.png';
 import music from '../../assets/images/musical-notes.png';
+import { useDispatch, useSelector } from "react-redux";
+import { registrationResult } from '../../application/selectors/userSelector';
+import { registerUser } from '../../application/actions/userAction';
+import { showAllert } from "../../application/actions/alertActions";
+import { Link } from "react-router-dom";
 
 const StyledContainer = withStyles({
     maxWidthMd: {
@@ -23,12 +28,15 @@ const StyledContainer = withStyles({
 const RegisterUserComponent = () => {
     const [activeStep, setActiveStep] = useState(0)
     const [valid, setValid] = useState(true)
+    const registrationResponseCode = useSelector(registrationResult)
+    const dispatch = useDispatch()
     const [formState, setFormState] = useState({
         firstName: "",
         lastName: "",
         birthDate: null,
         phoneNumber: "",
         email: "",
+        emailTaken: false,
         password: "",
         repeatedPassword: "",
         car: "",
@@ -78,12 +86,31 @@ const RegisterUserComponent = () => {
             }
         ]
     })
+
+    useEffect(() => {
+        if (parseInt(registrationResponseCode) >= 200 && parseInt(registrationResponseCode) < 300) {
+            let button = <Button startIcon={<ExitToAppOutlined/>} component={Link} variant="outlined" to="/login">Logowanie</Button>
+            let alertProps = {
+                open: true,
+                type: "success",
+                button: button,
+                message: "Rejestracja się powiodła. Przejdź do logowania aby w pełni korzystać z serwisu"
+            }
+            dispatch(showAllert(alertProps))
+        } else if (parseInt(registrationResponseCode) === 409) {
+            setFormState(prevState => ({
+                ...prevState,
+                emailTaken: true
+            }))
+            setActiveStep(1)
+        } 
+    }, [registrationResponseCode])
     
     const handleNext = () => {
         if(activeStep !== 3) {
             setActiveStep((prevActiveStep) => prevActiveStep + 1)
         } else {
-            //save
+            dispatch(registerUser(formState))
         }
     }
 

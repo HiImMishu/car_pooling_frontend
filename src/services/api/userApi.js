@@ -16,6 +16,21 @@ const registerUser = async (payload) => {
         })
 }
 
+const loginUser = async (payload) => {
+    return await axios.post(`${BASE_URL}/auth/login`, {email: payload.email, password: payload.password})
+        .then(res => {
+            return {
+                token: res.data.access_token,
+                status: res.status
+            }
+        })
+        .catch(err => {
+            return {
+                status: err.response.status
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -35,6 +50,9 @@ const mapUserRegistrationBody = (payload) => {
     }
 }
 
-export default {
-    registerUser
+const userApi = {
+    registerUser,
+    loginUser
 }
+
+export default userApi

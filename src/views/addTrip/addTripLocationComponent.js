@@ -8,7 +8,7 @@ const AddTripLocationComponent = ({setValid, state, setFormState}) => {
 
     useEffect(() => {
         setValid(state?.tripStartPlace !== "" && state?.tripEndPlace !== "" && (state?.tripStartPlace.toLowerCase() !== state?.tripEndPlace.toLowerCase()))
-    }, [])
+    }, [setValid, state?.tripStartPlace, state?.tripEndPlace])
 
     const validateForm = (event) => {
         setFormState(prevState => ({

@@ -31,17 +31,16 @@ const MessagesComponent = () => {
     />
 
     const userList = useMemo(() => {
-        {return Array.from(Array(50).keys()).map((index) => {
-            console.log(1)
+        return Array.from(Array(50).keys()).map((index) => {
             return <UserMessageItemComponent selectedItem={selectedIndex} setSelectedItem={setSelectedIndex} index={index}/>
-            })}
+            })
     }, [selectedIndex])
     
     const messagesList = useMemo(() => {
-        {return Array.from(Array(50).keys()).map(index => {
+        return Array.from(Array(50).keys()).map(index => {
             return index % 2 === 0 ? <RightMessageComponent/> : <LeftMessageComponent/>
-            })}
-    }, [selectedIndex])
+            })
+    }, [])
 
     return <main className="messages-container">
         <List className="users-list">

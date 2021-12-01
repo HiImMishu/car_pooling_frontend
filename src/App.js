@@ -1,7 +1,7 @@
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { alertSelector } from './application/selectors/alertSelector';
-import React from 'react';
+import React, { useEffect } from 'react';
 import HomeComponent from './views/home/homeComponent';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './views/navbar/navbar';
@@ -21,10 +21,13 @@ import { IconButton, Slide, Snackbar } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { closeAlert } from './application/actions/alertActions';
+import { tokenSelector } from './application/selectors/userSelector';
+import { initializeToken } from './application/actions/userAction';
 
 function App() {
   const alert = useSelector(alertSelector)
   const dispatch = useDispatch()
+  const token = useSelector(tokenSelector)
 
   const hideAlert = () => {
     dispatch(closeAlert)
@@ -33,6 +36,20 @@ function App() {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
+
+  useEffect(() => {
+      let localToken = localStorage.getItem('Token')
+      if (localToken && localToken !== token) {
+          dispatch(initializeToken(localToken))
+      }
+  })
+
+  useEffect(() => {
+      let localToken = localStorage.getItem('Token')
+      if (token && token !== localToken) {
+        localStorage.setItem('Token', token)
+      }
+  })
 
   return (
     <div className="main">

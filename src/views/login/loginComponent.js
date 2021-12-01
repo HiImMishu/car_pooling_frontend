@@ -1,7 +1,11 @@
 import { Paper, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Button } from "@material-ui/core";
-import { AlternateEmail, Email, LockOutlined, Visibility, VisibilityOff } from "@material-ui/icons";
-import { createRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { AlternateEmail, LockOutlined, Visibility, VisibilityOff } from "@material-ui/icons";
+import { createRef, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import { showAllert } from "../../application/actions/alertActions";
+import { clearLoginResponse, loginUser } from "../../application/actions/userAction";
+import { loginResultSelector, tokenSelector } from "../../application/selectors/userSelector";
 import "./styles.css";
 
 const LoginComponent = () => {
@@ -10,10 +14,30 @@ const LoginComponent = () => {
     const [password, setPassword] = useState("")
     const emailRef = createRef()
     const passwordRef = createRef()
+    const dispatch = useDispatch()
+    const loginStatus = useSelector(loginResultSelector)
+    const token = useSelector(tokenSelector)
+
+    useEffect(() => {
+        if (loginStatus === 401 || loginStatus === 400) {
+            let alertProps = {
+                open: true,
+                type: "error",
+                button: null,
+                message: "Błędny email i/lub hasło"
+            }
+            dispatch(showAllert(alertProps))
+        }
+        dispatch(clearLoginResponse)
+    }, [loginStatus, dispatch])
+
+    if (token) {
+        return <Redirect to="/"/>
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        //ACTION HERE
+        dispatch(loginUser({email: email, password: password}))
     }
 
     const handleEmailChange = (e) => {

@@ -9,7 +9,7 @@ const AddTripStopsComponent = ({setValid, state, setFormState}) => {
 
     useEffect(() => {
         setValid(true)
-    }, [])
+    }, [setValid])
 
     const handleSubmit = (e) => {
         e.preventDefault()

@@ -1,4 +1,4 @@
-import { Paper, Step, StepLabel, Stepper, withStyles, StepConnector, Button } from '@material-ui/core';
+import { Paper, Step, StepLabel, Stepper, withStyles, StepConnector } from '@material-ui/core';
 import { RadioButtonUnchecked, CheckCircleOutline, StarOutline, Group, AttachMoney } from '@material-ui/icons';
 import { cardParams } from '../tripsList/tripsList';
 import { useHistory } from 'react-router-dom';

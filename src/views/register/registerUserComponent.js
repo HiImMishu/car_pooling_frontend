@@ -104,7 +104,7 @@ const RegisterUserComponent = () => {
             }))
             setActiveStep(1)
         } 
-    }, [registrationResponseCode])
+    }, [registrationResponseCode, dispatch])
     
     const handleNext = () => {
         if(activeStep !== 3) {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { makeStyles, alpha } from "@material-ui/core";
-import { AppBar, Toolbar, Typography, Menu, Badge, MenuItem, IconButton, Button, Divider, Drawer } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Menu, Badge, MenuItem, IconButton, Button, Divider } from "@material-ui/core";
 import { DriveEta, Mail, AccountCircle, Notifications, MoreVert, Search, AddCircle, Add } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import './styles.css';

@@ -1,7 +1,7 @@
-import testApi from './testApi';
 import userApi from './userApi';
 
-export default {
-    testApi,
+const api = {
     userApi
 }
+
+export default api

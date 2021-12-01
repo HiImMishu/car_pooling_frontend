@@ -15,6 +15,8 @@ const alertReducer = (state = initialState, action) => {
             return {...state, alert: {...action.props}}
         case CLOSE_ALERT:
             return {...state, alert: {...initialState.alert}}
+        default:
+            break
     }
     return state
 }

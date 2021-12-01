@@ -7,7 +7,7 @@ const AddCarInformationComponent = ({setValid, state, setFormState}) => {
 
     useEffect(() => {
         setValid(true)
-    }, [])
+    }, [setValid])
 
     const handleChange = (event) => {
         setFormState(prevState => ({

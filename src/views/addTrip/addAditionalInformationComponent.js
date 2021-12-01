@@ -5,7 +5,7 @@ const AddAditionalInformationComponent = ({setValid, state, setFormState}) => {
 
     useEffect(() => {
         setValid(true)
-    }, [])
+    }, [setValid])
 
     const handleDescriptionChange = (e) => {
         setFormState(prevState => ({

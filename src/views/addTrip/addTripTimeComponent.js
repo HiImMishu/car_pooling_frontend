@@ -11,7 +11,7 @@ const AddTripTimeComponent = ({setValid, state, setFormState}) => {
 
     useEffect(() => {
         setValid(state.tripDates.length !== 0)
-    }, [state.tripDates?.length])
+    }, [state.tripDates?.length, setValid])
 
     const handleSubmit = (e) => {
         e.preventDefault()

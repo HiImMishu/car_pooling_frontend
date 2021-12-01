@@ -5,7 +5,7 @@ const AddTripSeatsComponent = ({setValid, state, setFormState}) => {
 
     useEffect(() => {
         setValid(true)
-    }, [])
+    }, [setValid])
 
     const handleChange = (e) => {
         if (e.target.value >= 1) {
@@ -50,7 +50,7 @@ const AddTripSeatsComponent = ({setValid, state, setFormState}) => {
                 />
             }
             label={<div className="trip-options-row">
-                <img className="additional-information" src={state.tripAddInfo.find(e => e.id === 0)?.avatar}/>
+                <img className="additional-information" src={state.tripAddInfo.find(e => e.id === 0)?.avatar} alt={state.tripAddInfo.find(e => e.id === 0)?.alt}/>
                 <h4>{state.tripAddInfo.find(e => e.id === 0)?.description}</h4>
             </div>}
         />

@@ -1,7 +1,7 @@
-import testMiddleware from './testMiddleware';
 import userMiddleware from './userMiddleware';
 
-export default [
-    ...testMiddleware,
+const middleware = [
     ...userMiddleware
 ]
+
+export default middleware

@@ -1,4 +1,4 @@
-import { loginResponse, LOGIN_USER, registerUserResponse, REGISTER_USER } from "../actions/userAction";
+import { fetchUserResponse, FETCH_USER, loginResponse, LOGIN_USER, logout, registerUserResponse, REGISTER_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -12,6 +12,16 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
             api.userApi.loginUser(action.payload)
                 .then(res => {
                     dispatch(loginResponse(res))
+                })
+            break
+        case FETCH_USER:
+            api.userApi.fetchUser(action.token)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else {
+                        dispatch(fetchUserResponse(res.user))
+                    }
                 })
             break
         default:

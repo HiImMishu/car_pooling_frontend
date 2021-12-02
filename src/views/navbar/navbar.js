@@ -5,6 +5,9 @@ import { DriveEta, Mail, AccountCircle, Notifications, MoreVert, Search, AddCirc
 import { Link } from "react-router-dom";
 import './styles.css';
 import NotificationsComponent from '../notifications/NotificationsComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import { tokenSelector } from '../../application/selectors/userSelector';
+import { logout } from '../../application/actions/userAction';
 
 const styles = makeStyles((theme) => ({
     grow: {
@@ -82,7 +85,8 @@ const Navbar = () => {
     const [anchorEl, setAnchorEl] = useState(null)
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
     const [notificationComponentVisible, setNotificationComponentVisible] = useState(false)
-    const authenticated = true
+    const authenticated = useSelector(tokenSelector)
+    const dispatch = useDispatch()
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -110,7 +114,7 @@ const Navbar = () => {
             <MenuItem key={1} component={Link} to="/my-trips" onClick={handleMenuClose}>Moje ogłoszenia</MenuItem>,
             <MenuItem key={2} component={Link} to={`/user/${2}/profile`} onClick={handleMenuClose}>Moje konto</MenuItem>,
             <Divider key={3}/>,
-            <MenuItem key={4} onClick={handleMenuClose}>Wyloguj</MenuItem>
+            <MenuItem key={4} onClick={() => {dispatch(logout); handleMenuClose()}}>Wyloguj</MenuItem>
         ]
     )
     const menuItemsUnLogged = (

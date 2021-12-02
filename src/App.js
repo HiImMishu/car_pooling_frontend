@@ -22,7 +22,8 @@ import { Close } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { closeAlert } from './application/actions/alertActions';
 import { tokenSelector } from './application/selectors/userSelector';
-import { initializeToken } from './application/actions/userAction';
+import { fetchUser, initializeToken } from './application/actions/userAction';
+import PrivateRoute from './privateRoute';
 
 function App() {
   const alert = useSelector(alertSelector)
@@ -42,14 +43,20 @@ function App() {
       if (localToken && localToken !== token) {
           dispatch(initializeToken(localToken))
       }
-  })
+  }, [])
 
   useEffect(() => {
       let localToken = localStorage.getItem('Token')
       if (token && token !== localToken) {
         localStorage.setItem('Token', token)
       }
-  })
+      if (token) {
+        dispatch(fetchUser(token))
+      }
+      if (token === null) {
+        localStorage.removeItem('Token')
+      }
+  }, [token])
 
   return (
     <div className="main">
@@ -98,9 +105,7 @@ function App() {
             <Route exact path="/user/:userId/reviews">
               <UserReviewsComponent/>
             </Route>
-            <Route exact path="/user/:userId/profile">
-              <UserProfileComponent/>
-            </Route>
+            <PrivateRoute exact path="/user/:userId/profile" component={UserProfileComponent}/>
             <Route exact path="/add-trip">
               <AddTripComponent/>
             </Route>

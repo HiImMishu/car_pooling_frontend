@@ -10,23 +10,49 @@ const registerUser = async (payload) => {
             }
         })
         .catch(err => {
-            return {
-                response: err.response.status
+            if (err?.response?.status) {
+                return {
+                    response: err.response.status
+                }
+            } else {
+                return {
+                    response: -1
+                }
             }
         })
 }
 
 const loginUser = async (payload) => {
     return await axios.post(`${BASE_URL}/auth/login`, {email: payload.email, password: payload.password})
+    .then(res => {
+        return {
+            token: res.data.access_token,
+            status: res.status
+        }
+    })
+    .catch(err => {
+        return {
+            status: err.response.status
+        }
+    })
+}
+
+const fetchUser = async (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.get(`${BASE_URL}/users`, config)
         .then(res => {
             return {
-                token: res.data.access_token,
-                status: res.status
+                status: res.status,
+                user: {...res.data}
             }
         })
-        .catch(err => {
+        .catch(() => {
             return {
-                status: err.response.status
+                status: 401
             }
         })
 }
@@ -52,7 +78,8 @@ const mapUserRegistrationBody = (payload) => {
 
 const userApi = {
     registerUser,
-    loginUser
+    loginUser,
+    fetchUser
 }
 
 export default userApi

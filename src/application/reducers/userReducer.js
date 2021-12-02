@@ -1,4 +1,4 @@
-import { CLEAR_LOGIN_USER_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, REGISTER_USER_RESPONSE } from "../actions/userAction";
+import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE } from "../actions/userAction";
 
 const initialState = {
     token: null
@@ -14,6 +14,10 @@ const userReducer = (state = initialState, action) => {
             return {...state, loginStatus: null}
         case INITIALIZE_TOKEN:
             return {...state, token: action.token}
+        case FETCH_USER_RESPONSE:
+            return {...state, user: action.response.user}
+        case LOGOUT:
+            return {token: null}
         default:
             return state
     }

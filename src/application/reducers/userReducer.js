@@ -15,7 +15,7 @@ const userReducer = (state = initialState, action) => {
         case INITIALIZE_TOKEN:
             return {...state, token: action.token}
         case FETCH_USER_RESPONSE:
-            return {...state, user: action.response.user}
+            return {...state, user: {...action.response}}
         case LOGOUT:
             return {token: null}
         default:

@@ -5,6 +5,8 @@ import { useHistory, useParams } from "react-router";
 import "./styles.css";
 import UpdateUserProfileDialog from "./updateUserProfileDialog";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { activeUserSelector } from "../../application/selectors/userSelector";
 
 const StyledContainer = withStyles({
     maxWidthMd: {
@@ -16,6 +18,9 @@ const UserProfileComponent = () => {
     const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false)
     const { userId } = useParams()
     const history = useHistory()
+    const activeUser = useSelector(activeUserSelector)
+    const userAge = parseInt((new Date() - new Date(activeUser.birthday)) / (1000*60*60*24*365))
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
     const navigateToReviews = () => {
         history.push(`/user/${userId}/reviews/`)
@@ -25,24 +30,34 @@ const UserProfileComponent = () => {
         setIsUpdateDialogOpen(true)
     }
 
+    const formatPhoneNumber = (phoneNumber) => {
+        let phoneNumberArray = phoneNumber.toString().split("")
+        return phoneNumberArray.map((number, index) => {
+            if (index !== 0 && index < phoneNumberArray.length-1 && (index+1) % 3 === 0) {
+                return number + "-"
+            } 
+            return number
+        }).join("")
+    }
+
     return <StyledContainer component="main" maxWidth="md" className="trip-container mb-1">
         <section className="user-profile-header">
             <img className="profile-avatar" src={defaultAvatar}/>
-            <h1 className="user-profile-heading user-full-heading">Marek Stawczyński</h1>
+            <h1 className="user-profile-heading user-full-heading">{activeUser.firstName} {activeUser.lastName}</h1>
         </section>
         <section className="user-profile-secondary-info standard-padding">
             <p className="user-secondary-info-item text-secondary">Wiek: </p>
-                <p className="user-secondary-info-item text-secondary">34 lat/-a</p>
+                <p className="user-secondary-info-item text-secondary">{userAge} lat/-a</p>
             <p className="user-secondary-info-item text-secondary">Email: </p>
-                <p className="user-secondary-info-item text-secondary">marek.stawczynski@gmail.com</p>
+                <p className="user-secondary-info-item text-secondary">{activeUser.email}</p>
             <p className="user-secondary-info-item text-secondary">Telefon: </p>
-                <p className="user-secondary-info-item text-secondary">(+48) 402-322-351</p>
+                <p className="user-secondary-info-item text-secondary">(+48) {formatPhoneNumber(activeUser.phoneNumber)}</p>
             <p className="user-secondary-info-item text-secondary">Dołączono: </p>
-                <p className="user-secondary-info-item text-secondary">21 stycznia 2017</p>
+                <p className="user-secondary-info-item text-secondary">{new Date(activeUser.registeredDate).toLocaleString("pl-PL", options)}</p>
             <p className="user-secondary-info-item text-secondary">Pojazd: </p>
-                <p className="user-secondary-info-item text-secondary">Volkswagen Passat</p>
+                <p className="user-secondary-info-item text-secondary">{activeUser.car}</p>
             <p className="user-secondary-info-item text-secondary">Kolor pojazdu: </p>
-                <p className="user-secondary-info-item text-secondary">Czerwony</p>
+                <p className="user-secondary-info-item text-secondary">{activeUser.carColor}</p>
         </section>
         <section className="profile-action-container standard-padding mt-1">
             <Button onClick={openUpdateDialog} className="profile-action-button" color="primary" variant="outlined">Aktualizuj profil</Button>

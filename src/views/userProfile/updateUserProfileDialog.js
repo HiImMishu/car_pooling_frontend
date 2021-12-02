@@ -1,23 +1,39 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, DialogContentText } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import pl from "date-fns/locale/pl";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../application/actions/userAction";
+import { tokenSelector } from "../../application/selectors/userSelector";
+import { activeUserSelector } from "../../application/selectors/userSelector";
 
 const UpdateUserProfileDialog = ({isOpen, setIsOpen}) => {
+    const activeUser = useSelector(activeUserSelector)
     const [userState, setUserState] = useState({
-        firstName: "Michał",
-        lastName: "Misiak",
-        birthDate: "1998-06-24",
-        phoneNumber: "503321961",
-        car: "Volkswagen CC",
-        carColor: "Brąszowy perłowy"
+        firstName: "",
+        lastName: "",
+        birthday: new Date().getTime(),
+        phoneNumber: "",
+        car: "",
+        carColor: ""
     })
+    const dispatch = useDispatch()
+    const token = useSelector(tokenSelector)
+
+    useEffect(() => {
+        setUserState({
+            firstName: activeUser.firstName,
+            lastName: activeUser.lastName,
+            birthday: activeUser.birthday,
+            phoneNumber: activeUser.phoneNumber,
+            car: activeUser.car,
+            carColor: activeUser.carColor
+    })}, [activeUser])
 
     const handleUpdate = (e) => {
         e.preventDefault()
-
-        //Set updated action here
+        dispatch(updateUser(userState, token))
         setIsOpen(false)
     }
 
@@ -40,7 +56,7 @@ const UpdateUserProfileDialog = ({isOpen, setIsOpen}) => {
     const handleDateChange = (e) => {
         setUserState(prevState => ({
             ...prevState,
-            birthDate: e
+            birthday: e.getTime()
         }))
     }
 
@@ -100,11 +116,12 @@ const UpdateUserProfileDialog = ({isOpen, setIsOpen}) => {
                 />
                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={pl} className="trip-date-time">
                     <DatePicker 
-                        value={userState.birthDate} 
+                        value={userState.birthday} 
                         onChange={handleDateChange}
                         format="dd-MM-yyyy"
                         inputVariant="outlined"
-                        name="birthDate"
+                        name="birthday"
+                        disableFuture
                         label="Data urodzenia"
                         cancelLabel="Anuluj"
                         okLabel="Zatwierdź"

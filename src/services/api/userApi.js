@@ -57,6 +57,31 @@ const fetchUser = async (token) => {
         })
 }
 
+const updateUser = async (token, payload) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.put(`${BASE_URL}/users`, payload, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: 401
+                }
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -79,7 +104,8 @@ const mapUserRegistrationBody = (payload) => {
 const userApi = {
     registerUser,
     loginUser,
-    fetchUser
+    fetchUser,
+    updateUser
 }
 
 export default userApi

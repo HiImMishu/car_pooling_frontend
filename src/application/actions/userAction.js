@@ -7,6 +7,7 @@ export const INITIALIZE_TOKEN = 'INITIALIZE_TOKEN'
 export const FETCH_USER = 'FETCH_USER'
 export const FETCH_USER_RESPONSE = 'FETCH_USER_RESULT'
 export const LOGOUT = 'LOG_OUT'
+export const UPDATE_USER = 'UPDATE_USER'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -49,4 +50,10 @@ export const fetchUserResponse = response => ({
 
 export const logout = ({
     type: LOGOUT
+})
+
+export const updateUser = (payload, token) => ({
+    type: UPDATE_USER,
+    payload: payload,
+    token: token
 })

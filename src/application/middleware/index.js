@@ -1,7 +1,9 @@
+import tripFlow from './tripMiddleware';
 import userMiddleware from './userMiddleware';
 
 const middleware = [
-    ...userMiddleware
+    ...userMiddleware,
+    tripFlow
 ]
 
 export default middleware

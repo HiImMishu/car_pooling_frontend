@@ -11,7 +11,7 @@ const AddTripSeatsComponent = ({setValid, state, setFormState}) => {
         if (e.target.value >= 1) {
             setFormState(prevState => ({
                 ...prevState,
-                "tripSeats": e.target.value
+                [e.target.name]: e.target.value
             }))
         }
     }
@@ -38,6 +38,20 @@ const AddTripSeatsComponent = ({setValid, state, setFormState}) => {
             value={state.tripSeats}
             onChange={handleChange}
             variant="outlined"
+            name="tripSeats"
+        />
+        <TextField
+            className="mb-2 w-15"
+            id="outlined-number"
+            label="Cena za jednego pasażera"
+            type="number"
+            InputLabelProps={{
+                shrink: true,
+            }}
+            value={state.costPerSeat}
+            onChange={handleChange}
+            variant="outlined"
+            name="costPerSeat"
         />
         <p className="text-secondary">Pozostawienie wolnego środkowego miejsca na tylnej kanapie ma wpływ na komfort pasażerów. Być może poskutkuje to lepszą opinią po odbyciu podróży!</p>
         <FormControlLabel

@@ -13,6 +13,10 @@ import noAnimals from '../../assets/images/no-animals.png';
 import noSmoking from '../../assets/images/no-smoking.png';
 import chat from '../../assets/images/chat.png';
 import music from '../../assets/images/musical-notes.png';
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { tokenSelector } from "../../application/selectors/userSelector";
+import { addTrip } from "../../application/actions/tripActions";
 
 const StyledContainer = withStyles({
     maxWidthMd: {
@@ -23,12 +27,15 @@ const StyledContainer = withStyles({
 const AddTripComponent = ({isUpdate, initialState}) => {
     const [activeStep, setActiveStep] = useState(0)
     const [valid, setValid] = useState(false)
+    const dispatch = useDispatch()
+    const token = useSelector(tokenSelector)
     const [formState, setFormState] = useState(initialState || {
         tripStartPlace: "",
         tripEndPlace: "",
         tripStops: [],
         tripDates: [],
         tripSeats: 1,
+        costPerSeat: 1,
         tripAddInfo: [
             {
                 id: 0,
@@ -90,7 +97,7 @@ const AddTripComponent = ({isUpdate, initialState}) => {
             if (isUpdate) {
                 //update
             } else {
-                //save
+                dispatch(addTrip(token, formState))
             }
         }
     }

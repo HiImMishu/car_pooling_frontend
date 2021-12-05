@@ -4,11 +4,13 @@ import { cardParams } from '../tripsList/tripsList';
 import { useHistory } from 'react-router-dom';
 import defaultAvatar from '../../assets/images/default-avatar.jpg';
 import "./styles.css";
+import { useSelector } from 'react-redux';
+import { activeUserSelector } from '../../application/selectors/userSelector';
 
 export const QontoConnector = withStyles({
     root: {
         padding: '5px 0',
-        marginLeft: 'calc(4rem - 0.75rem)',
+        marginLeft: 'calc(4rem - 2rem)',
         height: '30px'
     },
     line: {
@@ -28,25 +30,32 @@ export const StyledStepper = withStyles({
 
 export const StartTripIcon = () => {
     return <div className="stepper-icon-container">
-            <h4 className="stepper-time text-secondary">12:03</h4>
             <RadioButtonUnchecked color="primary" className="stepper-icon"/>
         </div>
 }
 
 export const FinishTripIcon = () => {
     return <div className="stepper-icon-container">
-            <h4 className="stepper-time text-secondary">15:22</h4>
             <CheckCircleOutline color="primary" className="stepper-icon"/>
         </div>
 }
 
-const TripCard = ({cssClass, searchParameter, tripDate}) => {
+const TripCard = ({cssClass, searchParameter, trip}) => {
     const history = useHistory()
-    const isOwner = true
+    const activeUser = useSelector(activeUserSelector)
+    const isOwner = activeUser?.id === trip?.owner?.id
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric' };
 
     const navigateToTrip = () => {
-        history.push("/search/"+2)
+        history.push("/search/"+trip.id)
     }
+
+    const tripDates = trip.tripDates.map(date => {
+        return <h5 className="text-secondary trip-date-card standard-padding">
+                {new Date(date).toLocaleString("pl-PL", options)}
+            </h5>
+    })
+    console.log(trip)
 
     return <Paper className={`trip-panel trip-card ${cssClass}`} onClick={navigateToTrip}>
         {searchParameter === cardParams.BEST_PRICE && <div className="badge-price">
@@ -55,31 +64,36 @@ const TripCard = ({cssClass, searchParameter, tripDate}) => {
         {searchParameter === cardParams.BEST_TIME && <div className="badge-time">
             Najszybszy czas wyjazdu!
         </div>}
-        {tripDate && <h5 className="text-secondary trip-date-card standard-padding">{tripDate}</h5>}
+        {tripDates}
         <StyledStepper className="stepper" orientation="vertical" connector={<QontoConnector/>}>
             <Step key={1} completed={true}>
                 <StepLabel StepIconComponent={StartTripIcon}>
-                    <h3 className="stepper-time">Warszawa Centralna</h3>
+                    <h3 className="stepper-time">{trip.startingPlace}</h3>
                 </StepLabel>
             </Step>
-            <Step key={2} completed={true}>
+            {trip.additionalStops?.length > 0 && <Step key={1} completed={true}>
+                <StepLabel StepIconComponent={StartTripIcon}>
+                    <h3 className="stepper-time">{trip.additionalStops.join(', ')} <span className="text-secondary">(stacje pośrednie)</span></h3>
+                </StepLabel>
+            </Step>}
+            <Step key={3} completed={true}>
                 <StepLabel StepIconComponent={FinishTripIcon}>
-                    <h3 className="stepper-time">Gdańsk Zachód</h3>
+                    <h3 className="stepper-time">{trip.endingPlace}</h3>
                 </StepLabel>
             </Step>
         </StyledStepper>
         <div className="trip-price">
-            <h3>56 zł</h3>
+            <h3>{trip.costPerSeat} zł</h3>
         </div>
         {isOwner ?
         <div className="card-stats standard-padding">
             <span className="stats-row">
                 <Group fontSize="lg"/>
-                <p className="stepper-time">Liczba pasażerów: 2</p>
+                <p className="stepper-time">Liczba pasażerów: {trip.enrolledPassengers.length}</p>
             </span> 
             <span className="stats-row">
                 <AttachMoney fontSize="lg"/>
-                <p className="stepper-time">Zaoszczędzone pieniądze: 112 zł</p>
+                <p className="stepper-time">Zaoszczędzone pieniądze: {trip.enrolledPassengers.length * trip.costPerSeat} zł</p>
             </span> 
         </div> :
         <div className="trip-bottom-row">

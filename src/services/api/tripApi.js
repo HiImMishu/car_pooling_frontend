@@ -27,6 +27,32 @@ const postTrip = async (token, payload) => {
         })
 }
 
+const fetchOwnedTrips = async (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.get(`${BASE_URL}/trips/owned`, config)
+        .then(res => {
+            return {
+                status: res.status,
+                ownedTrips: res.data
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapTripToBody = (payload) => ({
     startingPlace: payload.tripStartPlace,
     endingPlace: payload.tripEndPlace,
@@ -44,7 +70,8 @@ const mapTripToBody = (payload) => ({
 })
 
 const tripApi = {
-    postTrip
+    postTrip,
+    fetchOwnedTrips
 }
 
 export default tripApi

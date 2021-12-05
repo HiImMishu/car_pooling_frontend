@@ -26,6 +26,10 @@ const UserProfileComponent = () => {
         history.push(`/user/${userId}/reviews/`)
     }
 
+    const navigateToMyTrips = () => {
+        history.push(`/my-trips`)
+    }
+
     const openUpdateDialog = () => {
         setIsUpdateDialogOpen(true)
     }
@@ -80,7 +84,7 @@ const UserProfileComponent = () => {
                 <NavigateNext fontSize="large"/> 
             </span>
         </section>
-        <section className="trip-driver" onClick={navigateToReviews}>
+        <section className="trip-driver" onClick={navigateToMyTrips}>
             <div className="driver">
                 <span className="user-row">
                     <h3 className="user-reviews text-secondary"><List fontSize="large" className="list-icon"/> Dodane przejazdy</h3>

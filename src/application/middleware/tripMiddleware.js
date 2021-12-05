@@ -1,5 +1,5 @@
 import { showAllert } from "../actions/alertActions";
-import { ADD_TRIP } from "../actions/tripActions";
+import { ADD_TRIP, fetchOwnedTripsResponse, FETCH_OWNED_TRIPS } from "../actions/tripActions";
 import { logout } from "../actions/userAction";
 
 const tripFlow = ({api}) => ({dispatch}) => next => action => {
@@ -19,6 +19,16 @@ const tripFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(showAllert(alertProps))
                     }
                 })  
+            break
+        case FETCH_OWNED_TRIPS:
+            api.tripApi.fetchOwnedTrips(action.token)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 200) {
+                        dispatch(fetchOwnedTripsResponse({...res}))
+                    }
+                })
             break
         default:
             break

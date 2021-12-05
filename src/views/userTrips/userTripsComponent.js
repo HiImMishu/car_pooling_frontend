@@ -1,6 +1,11 @@
 import { withStyles, Container, Divider } from "@material-ui/core";
 import TripCard from "../tripCard/tripCard";
 import "./styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import { ownedTripsSelector } from "../../application/selectors/tripSelector";
+import { useEffect } from 'react';
+import { fetchOwnedTrips } from "../../application/actions/tripActions";
+import { tokenSelector } from "../../application/selectors/userSelector";
 
 const StyledContainer = withStyles({
     maxWidthMd: {
@@ -9,6 +14,13 @@ const StyledContainer = withStyles({
   })(Container)
 
 const UserTripsComponent = () => {
+    const dispatch = useDispatch()
+    const ownedTrips = useSelector(ownedTripsSelector)
+    const token = useSelector(tokenSelector)
+
+    useEffect(() => {
+        dispatch(fetchOwnedTrips(token))
+    }, [])
 
     return <StyledContainer className="content standard-padding" maxWidth="md">
         <header className="mt-2">
@@ -16,8 +28,8 @@ const UserTripsComponent = () => {
         </header>
         <Divider className="mt-1 mb-1"/>
         <section className="trip-list">
-            {Array.from(Array(10).keys()).map(() => {
-                return <TripCard tripDate="12/02/2021 18:30"/>
+            {ownedTrips?.map((trip) => {
+                return <TripCard key={trip.id} trip={trip}/>
             })}
         </section>
     </StyledContainer>

@@ -108,9 +108,7 @@ function App() {
             <PrivateRoute exact path="/user/:userId/profile" component={UserProfileComponent}/>
             <PrivateRoute exact path="/add-trip" component={AddTripComponent}/>
             <PrivateRoute exact path="/update-trip/:id" component={UpdateTripComponent}/>
-            <Route exact path="/my-trips">
-              <UserTripsComponent/>
-            </Route>
+            <PrivateRoute exact path="/my-trips" component={UserTripsComponent}/>
             <Route exact path="/messages">
               <MessagesComponent/>
             </Route>

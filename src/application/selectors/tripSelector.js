@@ -1,0 +1,1 @@
+export const ownedTripsSelector = state => state.tripReducer.ownedTrips

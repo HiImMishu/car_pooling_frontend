@@ -50,13 +50,6 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
         history.push("/search/"+trip.id)
     }
 
-    const tripDates = trip.tripDates.map(date => {
-        return <h5 className="text-secondary trip-date-card standard-padding">
-                {new Date(date).toLocaleString("pl-PL", options)}
-            </h5>
-    })
-    console.log(trip)
-
     return <Paper className={`trip-panel trip-card ${cssClass}`} onClick={navigateToTrip}>
         {searchParameter === cardParams.BEST_PRICE && <div className="badge-price">
             Najlepsza cena!
@@ -64,7 +57,9 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
         {searchParameter === cardParams.BEST_TIME && <div className="badge-time">
             Najszybszy czas wyjazdu!
         </div>}
-        {tripDates}
+        <h5 className="text-secondary trip-date-card standard-padding">
+            {new Date(trip?.tripDate).toLocaleString("pl-PL", options)}
+        </h5>   
         <StyledStepper className="stepper" orientation="vertical" connector={<QontoConnector/>}>
             <Step key={1} completed={true}>
                 <StepLabel StepIconComponent={StartTripIcon}>

@@ -1,5 +1,5 @@
 import { showAllert } from "../actions/alertActions";
-import { ADD_TRIP, fetchOwnedTripsResponse, fetchTripByIdResponse, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID } from "../actions/tripActions";
+import { ADD_TRIP, fetchOwnedTripsResponse, fetchTripByIdResponse, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID, UPDATE_TRIP } from "../actions/tripActions";
 import { logout } from "../actions/userAction";
 
 const tripFlow = ({api}) => ({dispatch}) => next => action => {
@@ -20,6 +20,22 @@ const tripFlow = ({api}) => ({dispatch}) => next => action => {
                     }
                 })  
             break
+        case UPDATE_TRIP:
+            api.tripApi.updateTrip(action.token, action.payload)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 200) {
+                        let alertProps = {
+                            open: true,
+                            type: "success",
+                            button: null,
+                            message: "Twój przejazd został zaktualizowany."
+                        }
+                        dispatch(showAllert(alertProps))
+                    }
+                })  
+            break    
         case FETCH_OWNED_TRIPS:
             api.tripApi.fetchOwnedTrips(action.token)
                 .then(res => {

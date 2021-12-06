@@ -1,6 +1,6 @@
 import { Container, withStyles, Stepper, Step, StepLabel, Typography, Button, MobileStepper } from "@material-ui/core";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddAditionalInformationComponent from "./addAditionalInformationComponent";
 import AddTripLocationComponent from "./addTripLocationComponent";
 import AddTripSeatsComponent from "./addTripSeatsComponent";
@@ -16,7 +16,7 @@ import music from '../../assets/images/musical-notes.png';
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { tokenSelector } from "../../application/selectors/userSelector";
-import { addTrip } from "../../application/actions/tripActions";
+import { addTrip, updateTrip } from "../../application/actions/tripActions";
 
 const StyledContainer = withStyles({
     maxWidthMd: {
@@ -82,10 +82,17 @@ const AddTripComponent = ({isUpdate, initialState}) => {
         ],
         tripDescription: ""
     })
+
+    useEffect(() => {
+        if (initialState) {
+            setFormState(initialState)
+        }
+    }, [initialState])
+
     const components = [
         <AddTripLocationComponent key={1} state={formState} setFormState={setFormState} setValid={setValid}/>,
         <AddTripStopsComponent key={2} state={formState} setFormState={setFormState} setValid={setValid}/>,
-        <AddTripTimeComponent key={3} state={formState} setFormState={setFormState} setValid={setValid}/>,
+        <AddTripTimeComponent key={3} state={formState} setFormState={setFormState} setValid={setValid} isUpdate={isUpdate}/>,
         <AddTripSeatsComponent key={4} state={formState} setFormState={setFormState} setValid={setValid}/>,
         <AddAditionalInformationComponent key={5} state={formState} setFormState={setFormState} setValid={setValid}/> 
     ]
@@ -95,7 +102,7 @@ const AddTripComponent = ({isUpdate, initialState}) => {
             setActiveStep((prevActiveStep) => prevActiveStep + 1)
         } else {
             if (isUpdate) {
-                //update
+                dispatch(updateTrip(token, formState))
             } else {
                 dispatch(addTrip(token, formState))
             }

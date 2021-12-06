@@ -5,13 +5,22 @@ import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import pl from "date-fns/locale/pl";
 
-const AddTripTimeComponent = ({setValid, state, setFormState}) => {
+const AddTripTimeComponent = ({setValid, state, setFormState, isUpdate}) => {
     const [tripDateTime, setTripDateTime] = useState(new Date())
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric' };
 
     useEffect(() => {
+        if (isUpdate) {
+            return true
+        }
         setValid(state.tripDates.length !== 0)
-    }, [state.tripDates?.length, setValid])
+    }, [state.tripDates?.length, setValid, isUpdate])
+
+    useEffect(() => {
+        if (isUpdate) {
+            setTripDateTime(state?.tripDate)
+        }
+    }, [isUpdate, state?.tripDate])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -20,8 +29,16 @@ const AddTripTimeComponent = ({setValid, state, setFormState}) => {
                 ...prevState,
                 "tripDates": [...prevState.tripDates, tripDateTime]
             }))
-        }
+        } 
         setValid(true)
+    }
+
+    const handlePickerChange = (date) => {
+        setFormState(prevState => ({
+            ...prevState,
+            "tripDate": date
+        }))
+        setTripDateTime(date)
     }
 
     const removeStop = (date) => {
@@ -57,7 +74,7 @@ const AddTripTimeComponent = ({setValid, state, setFormState}) => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={pl} className="trip-date-time">
                     <DateTimePicker 
                         value={tripDateTime} 
-                        onChange={setTripDateTime}
+                        onChange={handlePickerChange}
                         inputVariant="outlined"
                         disablePast
                         ampm={false}
@@ -66,14 +83,14 @@ const AddTripTimeComponent = ({setValid, state, setFormState}) => {
                         okLabel="Zatwierdź"
                     />
                 </MuiPickersUtilsProvider> 
-                <Button type="submit" variant="outlined" color="primary" startIcon={<Add/>}>
+                {!isUpdate && <Button type="submit" variant="outlined" color="primary" startIcon={<Add/>}>
                     Dodaj datę i czas wyjazdu
-                </Button>
+                </Button>}
             </span>
         </form>
-        <List>
+        {!isUpdate && <List>
             {tripDatesList}
-        </List>
+        </List>}
     </section>
 }
 

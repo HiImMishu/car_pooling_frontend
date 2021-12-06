@@ -27,6 +27,31 @@ const postTrip = async (token, payload) => {
         })
 }
 
+const updateTrip = async (token, payload) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.put(`${BASE_URL}/trips/${payload.id}`, mapTripToUpdateBody(payload), config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const fetchOwnedTrips = async (token) => {
     const config = {
         headers: {
@@ -95,10 +120,29 @@ const mapTripToBody = (payload) => ({
     autoAccept: payload.tripAddInfo[5].checked
 })
 
+const mapTripToUpdateBody = (payload) => ({
+    id: payload.id,
+    startingPlace: payload.tripStartPlace,
+    endingPlace: payload.tripEndPlace,
+    additionalStops: payload.tripStops,
+    tripDate: payload.tripDate,
+    allSeats: payload.tripSeats,
+    costPerSeat: payload.costPerSeat,
+    description: payload.tripDescription,
+    emptyThirdSeat: payload.tripAddInfo[0].checked,
+    noSmoking: payload.tripAddInfo[1].checked,
+    noAnimals: payload.tripAddInfo[2].checked,
+    talkative: payload.tripAddInfo[3].checked,
+    music: payload.tripAddInfo[4].checked,
+    autoAccept: payload.tripAddInfo[5].checked
+})
+
+
 const tripApi = {
     postTrip,
     fetchOwnedTrips,
-    fetchTripById
+    fetchTripById,
+    updateTrip
 }
 
 export default tripApi

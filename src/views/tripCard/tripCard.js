@@ -66,7 +66,7 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
                     <h3 className="stepper-time">{trip.startingPlace}</h3>
                 </StepLabel>
             </Step>
-            {trip.additionalStops?.length > 0 && <Step key={1} completed={true}>
+            {trip.additionalStops?.length > 0 && <Step key={2} completed={true}>
                 <StepLabel StepIconComponent={StartTripIcon}>
                     <h3 className="stepper-time">{trip.additionalStops.join(', ')} <span className="text-secondary">(stacje pośrednie)</span></h3>
                 </StepLabel>
@@ -83,11 +83,11 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
         {isOwner ?
         <div className="card-stats standard-padding">
             <span className="stats-row">
-                <Group fontSize="lg"/>
+                <Group fontSize="large"/>
                 <p className="stepper-time">Liczba pasażerów: {trip.enrolledPassengers.length}</p>
             </span> 
             <span className="stats-row">
-                <AttachMoney fontSize="lg"/>
+                <AttachMoney fontSize="large"/>
                 <p className="stepper-time">Zaoszczędzone pieniądze: {trip.enrolledPassengers.length * trip.costPerSeat} zł</p>
             </span> 
         </div> :

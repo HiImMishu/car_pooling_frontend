@@ -27,7 +27,7 @@ const AddAditionalInformationComponent = ({setValid, state, setFormState}) => {
                     <Checkbox
                         checked={info.checked}
                         onChange={handleCheckboxChange}
-                        name={info.id}
+                        name={`${info.id}`}
                         color="primary"
                     />
                 }

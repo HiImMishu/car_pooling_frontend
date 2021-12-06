@@ -6,6 +6,8 @@ export const CLEAR_LOGIN_USER_RESPONSE = 'CLEAR_LOGIN_USER_RESPONSE'
 export const INITIALIZE_TOKEN = 'INITIALIZE_TOKEN'
 export const FETCH_USER = 'FETCH_USER'
 export const FETCH_USER_RESPONSE = 'FETCH_USER_RESULT'
+export const FETCH_USER_BY_ID = 'FETCH_USER_BY_ID'
+export const FETCH_USER_BY_ID_RESPONSE = 'FETCH_USER__BY_ID_RESPONSE'
 export const LOGOUT = 'LOG_OUT'
 export const UPDATE_USER = 'UPDATE_USER'
 
@@ -45,6 +47,16 @@ export const fetchUser = token => ({
 
 export const fetchUserResponse = response => ({
     type: FETCH_USER_RESPONSE,
+    response: response
+})
+
+export const fetchUserById = userId => ({
+    type: FETCH_USER_BY_ID,
+    userId: userId
+})
+
+export const fetchUserByIdResponse = response => ({
+    type: FETCH_USER_BY_ID_RESPONSE,
     response: response
 })
 

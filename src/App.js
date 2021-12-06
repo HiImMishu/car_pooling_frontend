@@ -43,7 +43,7 @@ function App() {
       if (localToken && localToken !== token) {
           dispatch(initializeToken(localToken))
       }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
       let localToken = localStorage.getItem('Token')
@@ -56,7 +56,7 @@ function App() {
       if (token === null) {
         localStorage.removeItem('Token')
       }
-  }, [token])
+  }, [token, dispatch])
 
   return (
     <div className="main">

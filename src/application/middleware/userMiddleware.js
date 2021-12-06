@@ -1,4 +1,4 @@
-import { fetchUser, fetchUserResponse, FETCH_USER, loginResponse, LOGIN_USER, logout, registerUserResponse, REGISTER_USER, UPDATE_USER } from "../actions/userAction";
+import { fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, registerUserResponse, REGISTER_USER, UPDATE_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -31,6 +31,14 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(logout)
                     } else {
                         dispatch(fetchUser(action.token))
+                    }
+                })
+            break
+        case FETCH_USER_BY_ID:
+            api.userApi.fetchUserById(action.userId)
+                .then(res => {
+                    if (res.status === 200) {
+                        dispatch(fetchUserByIdResponse(res.user))
                     }
                 })
             break

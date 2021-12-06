@@ -57,6 +57,21 @@ const fetchUser = async (token) => {
         })
 }
 
+const fetchUserById = async (userId) => {
+    return await axios.get(`${BASE_URL}/users/${userId}`)
+        .then(res => {
+            return {
+                status: res.status,
+                user: {...res.data}
+            }
+        })
+        .catch(() => {
+            return {
+                status: 401
+            }
+        })
+}
+
 const updateUser = async (token, payload) => {
     const config = {
         headers: {
@@ -105,7 +120,8 @@ const userApi = {
     registerUser,
     loginUser,
     fetchUser,
-    updateUser
+    updateUser,
+    fetchUserById
 }
 
 export default userApi

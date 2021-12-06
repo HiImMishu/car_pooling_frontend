@@ -21,6 +21,14 @@ const UserProfileComponent = () => {
     const activeUser = useSelector(activeUserSelector)
     const userAge = parseInt((new Date() - new Date(activeUser.birthday)) / (1000*60*60*24*365))
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    
+    const add = (accumulator, a) => {
+        return accumulator + a;
+    }
+
+    const savedMoney = activeUser?.ownedTrips?.map(trip => {
+        return trip.enrolledPassengers.length * trip.costPerSeat
+    }).reduce(add, 0)
 
     const navigateToReviews = () => {
         history.push(`/user/${userId}/reviews/`)
@@ -46,7 +54,7 @@ const UserProfileComponent = () => {
 
     return <StyledContainer component="main" maxWidth="md" className="trip-container mb-1">
         <section className="user-profile-header">
-            <img className="profile-avatar" src={defaultAvatar}/>
+            <img className="profile-avatar" src={defaultAvatar} alt="User avatar"/>
             <h1 className="user-profile-heading user-full-heading">{activeUser.firstName} {activeUser.lastName}</h1>
         </section>
         <section className="user-profile-secondary-info standard-padding">
@@ -69,9 +77,9 @@ const UserProfileComponent = () => {
         <Divider className="mt-1 mb-1"/>
         <section className="user-profile-secondary-info standard-padding">
             <p className="user-secondary-info-item text-secondary">Opublikowanych przejazdów: </p>
-                <p className="user-secondary-info-item text-secondary">34</p>
+                <p className="user-secondary-info-item text-secondary">{activeUser?.ownedTrips?.length}</p>
             <p className="user-secondary-info-item text-secondary">Zaoszczędzono: </p>
-                <p className="user-secondary-info-item text-secondary">1643 zł</p>
+                <p className="user-secondary-info-item text-secondary">{savedMoney} zł</p>
         </section>
         <Divider className="mt-1 mb-1"/>
         <section className="trip-driver" onClick={navigateToReviews}>

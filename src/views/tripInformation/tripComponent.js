@@ -120,7 +120,7 @@ const TripComponent = () => {
                     </StepLabel>
                 </Step>
             </StyledStepper>
-            {isOwner &&
+            {(isOwner && new Date(trip?.tripDate) > new Date()) &&
             <div className="standard-padding top-padding action-button-container">
                 <Button  variant="contained" color="primary" size="medium" onClick={handleUpdate}>Edytuj</Button>
                 <Button  variant="outlined" color="primary" size="medium" onClick={() => setIsOpen(true)}>Usuń</Button>
@@ -198,7 +198,7 @@ const TripComponent = () => {
         <section className="passangers-section">
             <h2 className="passanger-heading standard-padding">Pasażerowie</h2>
             {trip?.enrolledPassengers?.map(passenger => {
-                return <div key={passenger.id} className="passanger">
+                return <div key={passenger.id} className="passanger" onClick={e => navigateToUser(passenger?.id)}>
                     <div className="driver">
                         <span className="user-row">
                             <h4 className="driver-name">{passenger.firstName}</h4>
@@ -216,7 +216,7 @@ const TripComponent = () => {
         <section className="passangers-section">
             <h2 className="passanger-heading standard-padding">Prośby o zaakceptowanie</h2>
             {trip?.awaitingAcceptation?.map(passenger => {
-                return <div key={passenger.id} div className="passanger-row">
+                return <div key={passenger.id} div className="passanger-row" onClick={e => navigateToUser(passenger?.id)}>
                     <div className="passanger">
                         <div className="driver">
                             <span className="user-row">

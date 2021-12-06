@@ -71,7 +71,7 @@ const UserInformationComponent = () => {
 
     useEffect(() => {
         dispatch(fetchUserById(userId))
-    }, [token])
+    }, [token, userId, dispatch])
 
     const navigateToReviews = () => {
         history.push(`/user/${userId}/reviews/`)

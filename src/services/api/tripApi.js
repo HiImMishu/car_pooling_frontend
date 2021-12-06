@@ -78,13 +78,34 @@ const fetchOwnedTrips = async (token) => {
         })
 }
 
-const fetchTripById = async (token, tripId) => {
+const fetchEnrolledTrips = async (token) => {
     const config = {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     }
-    return await axios.get(`${BASE_URL}/trips/${tripId}`, config)
+    return await axios.get(`${BASE_URL}/trips/enrolled`, config)
+        .then(res => {
+            return {
+                status: res.status,
+                enrolledTrips: res.data
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
+const fetchTripById = async (tripId) => {
+    return await axios.get(`${BASE_URL}/trips/${tripId}`)
         .then(res => {
             return {
                 status: res.status,
@@ -142,7 +163,8 @@ const tripApi = {
     postTrip,
     fetchOwnedTrips,
     fetchTripById,
-    updateTrip
+    updateTrip,
+    fetchEnrolledTrips
 }
 
 export default tripApi

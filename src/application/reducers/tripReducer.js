@@ -1,4 +1,4 @@
-import { FETCH_OWNED_TRIPS_RESPONSE, FETCH_TRIP_BY_ID_RESPONSE } from "../actions/tripActions"
+import { FETCH_ENROLLED_TRIPS_RESPONSE, FETCH_OWNED_TRIPS_RESPONSE, FETCH_TRIP_BY_ID_RESPONSE } from "../actions/tripActions"
 
 const initialState = {
     searchCriteria: {
@@ -12,6 +12,8 @@ const tripReducer = (state = initialState, action) => {
             return {...state, ownedTrips: action.ownedTrips}
         case FETCH_TRIP_BY_ID_RESPONSE:
             return {...state, trip: action.trip}
+        case FETCH_ENROLLED_TRIPS_RESPONSE:
+            return {...state, enrolledTrips: action.enrolledTrips}
         default:
             return state
     }

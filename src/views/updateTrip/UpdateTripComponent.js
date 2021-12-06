@@ -23,7 +23,7 @@ const UpdateTripComponent = () => {
       if (token) {
          dispatch(fetchTripById(token, id))
       }
-   }, [token])
+   }, [token, dispatch, id])
 
    useEffect(() => {
       if (trip) {
@@ -82,7 +82,7 @@ const UpdateTripComponent = () => {
             tripDescription: trip.description
         })
       }
-   }, [trip])
+   }, [trip, id])
 
    return <AddTripComponent 
       isUpdate = {true}

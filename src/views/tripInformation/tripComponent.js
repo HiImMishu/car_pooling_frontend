@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import "./styles.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activeUserSelector, tokenSelector } from "../../application/selectors/userSelector";
+import { activeUserSelector } from "../../application/selectors/userSelector";
 import { actualTripSelector } from "../../application/selectors/tripSelector";
 import { fetchTripById } from "../../application/actions/tripActions";
 import approveImg from '../../assets/images/approve.png';
@@ -70,14 +70,12 @@ const TripComponent = () => {
     const activeUser = useSelector(activeUserSelector)
     const trip = useSelector(actualTripSelector)
     const isOwner = activeUser?.id === trip?.owner?.id
-    const token = useSelector(tokenSelector)
     const options = { weekday: 'long', day: 'numeric', month: 'long' }
+    const alreadyEnrolled = trip?.enrolledPassengers?.find(passenger => passenger.id === activeUser?.id) !== undefined
 
     useEffect(() => {
-        if (token) {
-            dispatch(fetchTripById(token, id))
-        }
-    }, [token, dispatch, id])
+        dispatch(fetchTripById(id))
+    }, [dispatch, id])
 
     const handleUpdate = () => {
         history.push("/update-trip/"+id)
@@ -236,7 +234,7 @@ const TripComponent = () => {
                 </div>
             })}
         </section>}
-        {!isOwner &&
+        {(!isOwner && !alreadyEnrolled) &&
         <section className="button-container">
             <Button className="default-button" variant="contained" color="primary" size="medium" onClick={navigateToReservation} endIcon={<NavigateNext/>}>Kontunuuj</Button>
         </section>}

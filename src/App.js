@@ -24,6 +24,7 @@ import { closeAlert } from './application/actions/alertActions';
 import { tokenSelector } from './application/selectors/userSelector';
 import { fetchUser, initializeToken } from './application/actions/userAction';
 import PrivateRoute from './privateRoute';
+import EnrolledTripsComponent from './views/enrolledTrips/enrolledTripsComponent';
 
 function App() {
   const alert = useSelector(alertSelector)
@@ -109,6 +110,7 @@ function App() {
             <PrivateRoute exact path="/add-trip" component={AddTripComponent}/>
             <PrivateRoute exact path="/update-trip/:id" component={UpdateTripComponent}/>
             <PrivateRoute exact path="/my-trips" component={UserTripsComponent}/>
+            <PrivateRoute exact path="/my-enrollments" component={EnrolledTripsComponent}/>
             <Route exact path="/messages">
               <MessagesComponent/>
             </Route>

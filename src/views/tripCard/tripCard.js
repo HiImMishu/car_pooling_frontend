@@ -6,6 +6,51 @@ import defaultAvatar from '../../assets/images/default-avatar.jpg';
 import "./styles.css";
 import { useSelector } from 'react-redux';
 import { activeUserSelector } from '../../application/selectors/userSelector';
+import approveImg from '../../assets/images/approve.png';
+import freeSeat from '../../assets/images/free-seat.png';
+import noAnimals from '../../assets/images/no-animals.png';
+import noSmoking from '../../assets/images/no-smoking.png';
+import chat from '../../assets/images/chat.png';
+import music from '../../assets/images/musical-notes.png';
+
+const tripAddInfo = [
+    {
+        id: 0,
+        avatar: freeSeat,
+        alt: "Wolne miejsce na tylnej kanapie",
+        description: "Maks. dwie osoby na tylnym siedzeniu"
+    },
+    {
+        id: 1,
+        avatar: noSmoking,
+        alt: "Nie palić",
+        description: "Proszę, bez palenia w samochodzie"
+    },
+    {
+        id: 2,
+        avatar: noAnimals,
+        alt: "Zakaz zwierząt",
+        description: "Proszę, żadnych zwierząt w aucie"
+    },
+    {
+        id: 3,
+        avatar: chat,
+        alt: "Rozmowa",
+        description: "Chętnie rozmawiam"
+    },
+    {
+        id: 4,
+        avatar: music,
+        alt: "Muzyka",
+        description: "Muzyka? Nie ma problemu!"
+    },
+    {
+        id: 5,
+        avatar: approveImg,
+        alt: "Potwierdzam automatycznie",
+        description: "Potwierdzam automatycznie"
+    }
+]
 
 export const QontoConnector = withStyles({
     root: {
@@ -93,16 +138,19 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
         </div> :
         <div className="trip-bottom-row">
             <div className="driver">
-                <img className="avatar" src={defaultAvatar}/>
+                <img className="avatar" src={defaultAvatar} alt="Driver avatar"/>
                 <span className="user-row">
-                    <h4 className="driver-name">Marek</h4>
-                    <p className="driver-score"><StarOutline className="score-star"/> 5.0 / 5.0</p>
+                    <h4 className="driver-name">{trip?.owner?.firstName}</h4>
+                    <p className="driver-score"><StarOutline className="score-star"/> 5.0 / 5.0 //ToDo</p>
                 </span>
             </div>
             <div className="additional-informations">
-                <img className="additional-information" src={defaultAvatar}/>
-                <img className="additional-information" src={defaultAvatar}/>
-                <img className="additional-information" src={defaultAvatar}/>
+                {trip?.emptyThirdSeat && <img className="additional-information" src={tripAddInfo[0].avatar} alt={tripAddInfo[0].alt}/>}
+                {trip?.noSmoking && <img className="additional-information" src={tripAddInfo[1].avatar} alt={tripAddInfo[1].alt}/>}
+                {trip?.noAnimals && <img className="additional-information" src={tripAddInfo[2].avatar} alt={tripAddInfo[2].alt}/>}
+                {trip?.talkative && <img className="additional-information" src={tripAddInfo[3].avatar} alt={tripAddInfo[3].alt}/>}
+                {trip?.music && <img className="additional-information" src={tripAddInfo[4].avatar} alt={tripAddInfo[4].alt}/>}
+                {trip?.autoAccept && <img className="additional-information" src={tripAddInfo[5].avatar} alt={tripAddInfo[5].alt}/>}
             </div>
         </div>}
     </Paper>

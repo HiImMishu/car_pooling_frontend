@@ -1,10 +1,9 @@
 import { withStyles, Container, Divider } from "@material-ui/core";
 import TripCard from "../tripCard/tripCard";
-import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import { ownedTripsSelector } from "../../application/selectors/tripSelector";
+import { enrolledTripsSelector } from "../../application/selectors/tripSelector";
 import { useEffect } from 'react';
-import { fetchOwnedTrips } from "../../application/actions/tripActions";
+import { fetchEnrolledTrips } from "../../application/actions/tripActions";
 import { tokenSelector } from "../../application/selectors/userSelector";
 
 const StyledContainer = withStyles({
@@ -13,26 +12,26 @@ const StyledContainer = withStyles({
     }
   })(Container)
 
-const UserTripsComponent = () => {
+const EnrolledTripsComponent = () => {
     const dispatch = useDispatch()
-    const ownedTrips = useSelector(ownedTripsSelector)
+    const enrolledTrips = useSelector(enrolledTripsSelector)
     const token = useSelector(tokenSelector)
 
     useEffect(() => {
-        dispatch(fetchOwnedTrips(token))
+        dispatch(fetchEnrolledTrips(token))
     }, [dispatch, token])
 
     return <StyledContainer className="content standard-padding" maxWidth="md">
         <header className="mt-2">
-            <h1 className="my-trips-heading">Poniżej znajduje się lista udostępnionych przez Ciebie ofert</h1>
+            <h1 className="my-trips-heading">Poniżej znajduje się lista przejzdów na które jesteś zapisany</h1>
         </header>
         <Divider className="mt-1 mb-1"/>
         <section className="trip-list">
-            {ownedTrips?.map((trip) => {
+            {enrolledTrips?.map((trip) => {
                 return <TripCard key={trip.id} trip={trip}/>
             })}
         </section>
     </StyledContainer>
 }
 
-export default UserTripsComponent
+export default EnrolledTripsComponent

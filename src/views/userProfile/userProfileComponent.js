@@ -34,6 +34,10 @@ const UserProfileComponent = () => {
         history.push(`/user/${userId}/reviews/`)
     }
 
+    const navigateToEnrollments = () => {
+        history.push(`/my-enrollments`)
+    }
+
     const navigateToMyTrips = () => {
         history.push(`/my-trips`)
     }
@@ -82,7 +86,7 @@ const UserProfileComponent = () => {
                 <p className="user-secondary-info-item text-secondary">{savedMoney} zł</p>
         </section>
         <Divider className="mt-1 mb-1"/>
-        <section className="trip-driver" onClick={navigateToReviews}>
+        <section className="trip-driver" onClick={navigateToEnrollments}>
             <div className="driver">
                 <span className="user-row">
                     <h3 className="user-reviews text-secondary"><AirlineSeatReclineNormal className="seat-icon" fontSize="large"/> Zarezerwowane przejazdy</h3>

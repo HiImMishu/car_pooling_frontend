@@ -7,9 +7,9 @@ import { useHistory } from 'react-router-dom';
 import "./styles.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activeUserSelector } from "../../application/selectors/userSelector";
+import { activeUserSelector, tokenSelector } from "../../application/selectors/userSelector";
 import { actualTripSelector } from "../../application/selectors/tripSelector";
-import { fetchTripById } from "../../application/actions/tripActions";
+import { deleteTrip, fetchTripById } from "../../application/actions/tripActions";
 import approveImg from '../../assets/images/approve.png';
 import freeSeat from '../../assets/images/free-seat.png';
 import noAnimals from '../../assets/images/no-animals.png';
@@ -69,6 +69,7 @@ const TripComponent = () => {
     const dispatch = useDispatch()
     const activeUser = useSelector(activeUserSelector)
     const trip = useSelector(actualTripSelector)
+    const token = useSelector(tokenSelector)
     const isOwner = activeUser?.id === trip?.owner?.id
     const options = { weekday: 'long', day: 'numeric', month: 'long' }
     const alreadyEnrolled = trip?.enrolledPassengers?.find(passenger => passenger.id === activeUser?.id) !== undefined
@@ -82,7 +83,9 @@ const TripComponent = () => {
     } 
 
     const handleDelete = () => {
-        //Delete logix here
+        if (token) {
+            dispatch(deleteTrip(token, id))
+        }
         handleDeleteAlertClose()
     }
 
@@ -210,7 +213,7 @@ const TripComponent = () => {
                 </div>
             })}
         </section>
-        {isOwner && 
+        {(isOwner && new Date(trip?.tripDate) > new Date()) && 
         <section className="passangers-section">
             <h2 className="passanger-heading standard-padding">Prośby o zaakceptowanie</h2>
             {trip?.awaitingAcceptation?.map(passenger => {

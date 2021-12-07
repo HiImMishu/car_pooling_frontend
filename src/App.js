@@ -97,9 +97,7 @@ function App() {
             <Route exact path="/search/:id">
               <TripComponent/>
             </Route>
-            <Route exact path="/search/:id/reservation">
-              <TripReservationComponent/>
-            </Route>
+            <PrivateRoute exact path="/search/:id/reservation" component={TripReservationComponent}/>
             <Route exact path="/user/:userId">
               <UserInformationComponent/>
             </Route>

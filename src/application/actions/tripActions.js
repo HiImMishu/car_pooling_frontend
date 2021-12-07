@@ -6,6 +6,7 @@ export const FETCH_TRIP_BY_ID = 'FETCH_TRIP_BY_ID'
 export const FETCH_TRIP_BY_ID_RESPONSE = 'FETCH_TRIP_BY_ID_RESPONSE'
 export const FETCH_ENROLLED_TRIPS = 'FETCH_ENROLLED_TRIPS'
 export const FETCH_ENROLLED_TRIPS_RESPONSE = 'FETCH_ENROLLED_TRIPS_RESPONSE'
+export const DELETE_TRIP = 'DELETE_TRIP'
 
 export const addTrip = (token, payload) => ({
     type: ADD_TRIP,
@@ -49,4 +50,10 @@ export const fetchEnrolledTrips = token => ({
 export const fetchEnrolledTripsReponse = response => ({
     type: FETCH_ENROLLED_TRIPS_RESPONSE,
     enrolledTrips: response.enrolledTrips
+})
+
+export const deleteTrip = (token, tripId) => ({
+    type: DELETE_TRIP,
+    token: token,
+    tripId: tripId
 })

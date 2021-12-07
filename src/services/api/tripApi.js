@@ -125,6 +125,31 @@ const fetchTripById = async (tripId) => {
         })
 }
 
+const deleteTrip = async (token, tripId) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.delete(`${BASE_URL}/trips/${tripId}`, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapTripToBody = (payload) => ({
     startingPlace: payload.tripStartPlace,
     endingPlace: payload.tripEndPlace,
@@ -164,7 +189,8 @@ const tripApi = {
     fetchOwnedTrips,
     fetchTripById,
     updateTrip,
-    fetchEnrolledTrips
+    fetchEnrolledTrips,
+    deleteTrip
 }
 
 export default tripApi

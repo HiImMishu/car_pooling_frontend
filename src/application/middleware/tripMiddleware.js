@@ -1,5 +1,5 @@
 import { showAllert } from "../actions/alertActions";
-import { ADD_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID, UPDATE_TRIP } from "../actions/tripActions";
+import { ADD_TRIP, DELETE_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID, UPDATE_TRIP } from "../actions/tripActions";
 import { logout } from "../actions/userAction";
 
 const tripFlow = ({api}) => ({dispatch}) => next => action => {
@@ -61,6 +61,22 @@ const tripFlow = ({api}) => ({dispatch}) => next => action => {
                 .then(res => {
                     if(res.status === 200) {
                         dispatch(fetchTripByIdResponse({...res}))
+                    }
+                })
+            break
+        case DELETE_TRIP:
+            api.tripApi.deleteTrip(action.token, action.tripId)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 204) {
+                        let alertProps = {
+                            open: true,
+                            type: "success",
+                            button: null,
+                            message: "Twój przejazd został usunięty."
+                        }
+                        dispatch(showAllert(alertProps))
                     }
                 })
             break

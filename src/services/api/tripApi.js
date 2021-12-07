@@ -150,6 +150,31 @@ const deleteTrip = async (token, tripId) => {
         })
 }
 
+const enrollToTrip = async (token, tripId) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.post(`${BASE_URL}/trips/${tripId}/enrollments`, null, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapTripToBody = (payload) => ({
     startingPlace: payload.tripStartPlace,
     endingPlace: payload.tripEndPlace,
@@ -190,7 +215,8 @@ const tripApi = {
     fetchTripById,
     updateTrip,
     fetchEnrolledTrips,
-    deleteTrip
+    deleteTrip,
+    enrollToTrip
 }
 
 export default tripApi

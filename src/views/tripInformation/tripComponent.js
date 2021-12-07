@@ -73,6 +73,7 @@ const TripComponent = () => {
     const isOwner = activeUser?.id === trip?.owner?.id
     const options = { weekday: 'long', day: 'numeric', month: 'long' }
     const alreadyEnrolled = trip?.enrolledPassengers?.find(passenger => passenger.id === activeUser?.id) !== undefined
+    const waitingForAccept = trip?.awaitingAcceptation?.find(passenger => passenger.id === activeUser?.id) !== undefined
 
     useEffect(() => {
         dispatch(fetchTripById(id))
@@ -99,6 +100,10 @@ const TripComponent = () => {
 
     const navigateToReservation = () => {
         history.push(`/search/${id}/reservation`)
+    }
+
+    const resignFromTrip = (e) => {
+        console.log("Elo")
     }
 
     return <StyledContainer component="main" maxWidth="md" className="trip-container">
@@ -237,9 +242,13 @@ const TripComponent = () => {
                 </div>
             })}
         </section>}
-        {(!isOwner && !alreadyEnrolled) &&
+        {waitingForAccept && <h3 className="text-center">Oczekujesz na zatwierdzenie przez kierowcę.</h3>}
+        {(!isOwner && !alreadyEnrolled && new Date(trip?.tripDate) > new Date() && !waitingForAccept) &&
         <section className="button-container">
             <Button className="default-button" variant="contained" color="primary" size="medium" onClick={navigateToReservation} endIcon={<NavigateNext/>}>Kontunuuj</Button>
+        </section>}
+        {(waitingForAccept || alreadyEnrolled) && <section className="button-container mt-1">
+            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resignFromTrip} endIcon={<NavigateNext/>}>Rezygnuj</Button>
         </section>}
         <Dialog open={isOpen} onClose={handleDeleteAlertClose}>
             <DialogTitle>Czy na pewno chcesz usunąć ten przejazd?</DialogTitle>

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { activeUserSelector, tokenSelector } from "../../application/selectors/userSelector";
 import { actualTripSelector } from "../../application/selectors/tripSelector";
-import { deleteTrip, fetchTripById } from "../../application/actions/tripActions";
+import { deleteTrip, fetchTripById, resignFromTrip } from "../../application/actions/tripActions";
 import approveImg from '../../assets/images/approve.png';
 import freeSeat from '../../assets/images/free-seat.png';
 import noAnimals from '../../assets/images/no-animals.png';
@@ -102,8 +102,10 @@ const TripComponent = () => {
         history.push(`/search/${id}/reservation`)
     }
 
-    const resignFromTrip = (e) => {
-        console.log("Elo")
+    const resign = (e) => {
+        if (token) {
+            dispatch(resignFromTrip(token, id))
+        }
     }
 
     return <StyledContainer component="main" maxWidth="md" className="trip-container">
@@ -243,12 +245,13 @@ const TripComponent = () => {
             })}
         </section>}
         {waitingForAccept && <h3 className="text-center">Oczekujesz na zatwierdzenie przez kierowcę.</h3>}
-        {(!isOwner && !alreadyEnrolled && new Date(trip?.tripDate) > new Date() && !waitingForAccept) &&
+        {!activeUser && <h3 className="text-center">Zaloguj się aby zapisać się na przejazd.</h3>}
+        {(!isOwner && !alreadyEnrolled && new Date(trip?.tripDate) > new Date() && !waitingForAccept && activeUser) &&
         <section className="button-container">
             <Button className="default-button" variant="contained" color="primary" size="medium" onClick={navigateToReservation} endIcon={<NavigateNext/>}>Kontunuuj</Button>
         </section>}
         {(waitingForAccept || alreadyEnrolled) && <section className="button-container mt-1">
-            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resignFromTrip} endIcon={<NavigateNext/>}>Rezygnuj</Button>
+            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resign} endIcon={<NavigateNext/>}>Rezygnuj</Button>
         </section>}
         <Dialog open={isOpen} onClose={handleDeleteAlertClose}>
             <DialogTitle>Czy na pewno chcesz usunąć ten przejazd?</DialogTitle>

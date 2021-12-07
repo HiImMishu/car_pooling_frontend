@@ -1,5 +1,5 @@
 import { showAllert } from "../actions/alertActions";
-import { ADD_TRIP, DELETE_TRIP, ENROLL_TO_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchTripById, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID, UPDATE_TRIP } from "../actions/tripActions";
+import { ADD_TRIP, DELETE_TRIP, ENROLL_TO_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchTripById, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID, RESIGN_FROM_TRIP, UPDATE_TRIP } from "../actions/tripActions";
 import { logout } from "../actions/userAction";
 
 const tripFlow = ({api}) => ({dispatch}) => next => action => {
@@ -101,6 +101,23 @@ const tripFlow = ({api}) => ({dispatch}) => next => action => {
                         }
                     }
                     dispatch(showAllert(alertProps))
+                    dispatch(fetchTripById(action.tripId))
+                })
+            break
+        case RESIGN_FROM_TRIP:
+            api.tripApi.resignFromTrip(action.token, action.tripId)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 204) {
+                        var alertProps = {
+                            open: true,
+                            type: "success",
+                            button: null,
+                            message: "Zostałeś wypisany z przejazdu."
+                        }
+                        dispatch(showAllert(alertProps))
+                    }
                     dispatch(fetchTripById(action.tripId))
                 })
             break

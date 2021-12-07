@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { activeUserSelector, tokenSelector } from "../../application/selectors/userSelector";
 import { actualTripSelector } from "../../application/selectors/tripSelector";
-import { deleteTrip, fetchTripById, resignFromTrip } from "../../application/actions/tripActions";
+import { acceptEnrollmentRequest, deleteTrip, fetchTripById, rejectEnrollmentRequest, resignFromTrip } from "../../application/actions/tripActions";
 import approveImg from '../../assets/images/approve.png';
 import freeSeat from '../../assets/images/free-seat.png';
 import noAnimals from '../../assets/images/no-animals.png';
@@ -105,6 +105,18 @@ const TripComponent = () => {
     const resign = (e) => {
         if (token) {
             dispatch(resignFromTrip(token, id))
+        }
+    }
+
+    const acceptUserRequest = (userId) => {
+        if (token) {
+            dispatch(acceptEnrollmentRequest(token, id, userId))
+        }
+    }
+
+    const rejectUserRequest = (userId) => {
+        if (token) {
+            dispatch(rejectEnrollmentRequest(token, id, userId))
         }
     }
 
@@ -224,8 +236,8 @@ const TripComponent = () => {
         <section className="passangers-section">
             <h2 className="passanger-heading standard-padding">Prośby o zaakceptowanie</h2>
             {trip?.awaitingAcceptation?.map(passenger => {
-                return <div key={passenger.id} div className="passanger-row" onClick={e => navigateToUser(passenger?.id)}>
-                    <div className="passanger">
+                return <div key={passenger.id} div className="passanger-row">
+                    <div className="passanger" onClick={e => navigateToUser(passenger?.id)}>
                         <div className="driver">
                             <span className="user-row">
                                 <h4 className="driver-name">{passenger.firstName}</h4>
@@ -238,8 +250,8 @@ const TripComponent = () => {
                         </span>
                     </div>
                     <div className="button-container-row">
-                        <Button color="primary" variant="contained">Akceptuj</Button>
-                        <Button color="primary" variant="outlined">Odrzuć</Button>
+                        <Button color="primary" variant="contained" onClick={() => acceptUserRequest(passenger.id)}>Akceptuj</Button>
+                        <Button color="primary" variant="outlined" onClick={() => rejectUserRequest(passenger.id)}>Odrzuć</Button>
                     </div>
                 </div>
             })}

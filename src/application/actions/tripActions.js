@@ -9,6 +9,8 @@ export const FETCH_ENROLLED_TRIPS_RESPONSE = 'FETCH_ENROLLED_TRIPS_RESPONSE'
 export const DELETE_TRIP = 'DELETE_TRIP'
 export const ENROLL_TO_TRIP = 'ENROLL_TO_TRIP'
 export const RESIGN_FROM_TRIP = 'RESIGN_FROM_TRIP'
+export const ACCEPT_ENROLLMENT_REQUEST = 'ACCEPT_ENROLLMENT_REQUEST'
+export const REJECT_ENROLLMENT_REQUEST = 'REJECT_ENROLLMENT_REQUEST'
 
 export const addTrip = (token, payload) => ({
     type: ADD_TRIP,
@@ -71,4 +73,18 @@ export const resignFromTrip = (token, tripId) => ({
     type: RESIGN_FROM_TRIP,
     token: token,
     tripId: tripId
+})
+
+export const acceptEnrollmentRequest = (token, tripId, userId) => ({
+    type: ACCEPT_ENROLLMENT_REQUEST,
+    token: token,
+    tripId: tripId,
+    userId: userId
+})
+
+export const rejectEnrollmentRequest = (token, tripId, userId) => ({
+    type: REJECT_ENROLLMENT_REQUEST,
+    token: token,
+    tripId: tripId,
+    userId: userId
 })

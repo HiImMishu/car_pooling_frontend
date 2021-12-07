@@ -200,6 +200,57 @@ const resignFromTrip = async (token, tripId) => {
         })
 }
 
+
+const acceptUserEnrollment = async (token, tripId, userId) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.put(`${BASE_URL}/trips/${tripId}/enrollments/${userId}`, null, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
+const rejectUserEnrollment = async (token, tripId, userId) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.delete(`${BASE_URL}/trips/${tripId}/enrollments/${userId}`, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapTripToBody = (payload) => ({
     startingPlace: payload.tripStartPlace,
     endingPlace: payload.tripEndPlace,
@@ -242,7 +293,9 @@ const tripApi = {
     fetchEnrolledTrips,
     deleteTrip,
     enrollToTrip,
-    resignFromTrip
+    resignFromTrip,
+    acceptUserEnrollment,
+    rejectUserEnrollment
 }
 
 export default tripApi

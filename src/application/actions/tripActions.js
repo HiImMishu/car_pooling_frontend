@@ -11,6 +11,8 @@ export const ENROLL_TO_TRIP = 'ENROLL_TO_TRIP'
 export const RESIGN_FROM_TRIP = 'RESIGN_FROM_TRIP'
 export const ACCEPT_ENROLLMENT_REQUEST = 'ACCEPT_ENROLLMENT_REQUEST'
 export const REJECT_ENROLLMENT_REQUEST = 'REJECT_ENROLLMENT_REQUEST'
+export const FETCH_PAST_TRIPS = 'FETCH_PAST_TRIPS'
+export const FETCH_PAST_TRIPS_RESPONSE = 'FETCH_PAST_TRIPS_RESPONSE'
 
 export const addTrip = (token, payload) => ({
     type: ADD_TRIP,
@@ -87,4 +89,15 @@ export const rejectEnrollmentRequest = (token, tripId, userId) => ({
     token: token,
     tripId: tripId,
     userId: userId
+})
+
+export const fetchPastTrips = token => ({
+    type: FETCH_PAST_TRIPS,
+    token: token
+})
+
+export const fetchPastTripsResponse = response => ({
+    type: FETCH_PAST_TRIPS_RESPONSE,
+    status: response.status,
+    pastTrips: response.pastTrips
 })

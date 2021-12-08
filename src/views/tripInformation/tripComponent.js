@@ -262,7 +262,10 @@ const TripComponent = () => {
         <section className="button-container">
             <Button className="default-button" variant="contained" color="primary" size="medium" onClick={navigateToReservation} endIcon={<NavigateNext/>}>Kontunuuj</Button>
         </section>}
-        {(waitingForAccept || alreadyEnrolled) && <section className="button-container mt-1">
+        {((waitingForAccept || alreadyEnrolled) && new Date(trip?.tripDate) < new Date()) && <section className="button-container mt-1">
+            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resign} endIcon={<NavigateNext/>}>Dodaj ocenę</Button>
+        </section>}
+        {((waitingForAccept || alreadyEnrolled) && new Date(trip?.tripDate) > new Date()) && <section className="button-container mt-1">
             <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resign} endIcon={<NavigateNext/>}>Rezygnuj</Button>
         </section>}
         <Dialog open={isOpen} onClose={handleDeleteAlertClose}>

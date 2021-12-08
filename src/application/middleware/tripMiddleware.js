@@ -1,5 +1,5 @@
 import { showAllert } from "../actions/alertActions";
-import { ACCEPT_ENROLLMENT_REQUEST, ADD_TRIP, DELETE_TRIP, ENROLL_TO_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchTripById, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_TRIP_BY_ID, REJECT_ENROLLMENT_REQUEST, RESIGN_FROM_TRIP, UPDATE_TRIP } from "../actions/tripActions";
+import { ACCEPT_ENROLLMENT_REQUEST, ADD_TRIP, DELETE_TRIP, ENROLL_TO_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchPastTripsResponse, fetchTripById, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_PAST_TRIPS, FETCH_TRIP_BY_ID, REJECT_ENROLLMENT_REQUEST, RESIGN_FROM_TRIP, UPDATE_TRIP } from "../actions/tripActions";
 import { logout } from "../actions/userAction";
 
 const tripFlow = ({api}) => ({dispatch}) => next => action => {
@@ -137,6 +137,16 @@ const tripFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(logout)
                     } 
                     dispatch(fetchTripById(action.tripId))
+                })
+            break
+        case FETCH_PAST_TRIPS:
+            api.tripApi.fetchPastTrips(action.token)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 200) {
+                        dispatch(fetchPastTripsResponse({...res}))
+                    }
                 })
             break
         default:

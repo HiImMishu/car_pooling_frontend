@@ -41,6 +41,10 @@ const UserProfileComponent = () => {
     const navigateToMyTrips = () => {
         history.push(`/my-trips`)
     }
+    
+    const navigateToPastTrips = () => {
+        history.push(`/past-trips`)
+    }
 
     const openUpdateDialog = () => {
         setIsUpdateDialogOpen(true)
@@ -106,7 +110,7 @@ const UserProfileComponent = () => {
                 <NavigateNext fontSize="large"/> 
             </span>
         </section>
-        <section className="trip-driver" onClick={navigateToReviews}>
+        <section className="trip-driver" onClick={navigateToPastTrips}>
             <div className="driver">
                 <span className="user-row">
                     <h3 className="user-reviews text-secondary"><CheckCircleOutline fontSize="large" className="tick-icon"/> Odbyte przejazdy</h3>

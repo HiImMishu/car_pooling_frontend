@@ -251,6 +251,32 @@ const rejectUserEnrollment = async (token, tripId, userId) => {
         })
 }
 
+const fetchPastTrips = async (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.get(`${BASE_URL}/trips/past-taken`, config)
+        .then(res => {
+            return {
+                status: res.status,
+                pastTrips: res.data
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapTripToBody = (payload) => ({
     startingPlace: payload.tripStartPlace,
     endingPlace: payload.tripEndPlace,
@@ -295,7 +321,8 @@ const tripApi = {
     enrollToTrip,
     resignFromTrip,
     acceptUserEnrollment,
-    rejectUserEnrollment
+    rejectUserEnrollment,
+    fetchPastTrips
 }
 
 export default tripApi

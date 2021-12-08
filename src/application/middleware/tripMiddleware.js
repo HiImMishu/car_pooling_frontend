@@ -1,5 +1,5 @@
 import { showAllert } from "../actions/alertActions";
-import { ACCEPT_ENROLLMENT_REQUEST, ADD_TRIP, DELETE_TRIP, ENROLL_TO_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchPastTripsResponse, fetchTripById, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_PAST_TRIPS, FETCH_TRIP_BY_ID, REJECT_ENROLLMENT_REQUEST, RESIGN_FROM_TRIP, UPDATE_TRIP } from "../actions/tripActions";
+import { ACCEPT_ENROLLMENT_REQUEST, ADD_TRIP, DELETE_TRIP, ENROLL_TO_TRIP, fetchEnrolledTripsReponse, fetchOwnedTripsResponse, fetchPastTripsResponse, fetchSearchedTripsResult, fetchTripById, fetchTripByIdResponse, FETCH_ENROLLED_TRIPS, FETCH_OWNED_TRIPS, FETCH_PAST_TRIPS, FETCH_SEARCHED_TRIPS, FETCH_TRIP_BY_ID, REJECT_ENROLLMENT_REQUEST, RESIGN_FROM_TRIP, UPDATE_TRIP } from "../actions/tripActions";
 import { logout } from "../actions/userAction";
 
 const tripFlow = ({api}) => ({dispatch}) => next => action => {
@@ -146,6 +146,14 @@ const tripFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(logout)
                     } else if(res.status === 200) {
                         dispatch(fetchPastTripsResponse({...res}))
+                    }
+                })
+            break
+        case FETCH_SEARCHED_TRIPS:
+            api.tripApi.fetchMatchingTrips(action.searchCriteria)
+                .then(res => {
+                    if(res.status === 200) {
+                        dispatch(fetchSearchedTripsResult({...res}))
                     }
                 })
             break

@@ -13,6 +13,9 @@ export const ACCEPT_ENROLLMENT_REQUEST = 'ACCEPT_ENROLLMENT_REQUEST'
 export const REJECT_ENROLLMENT_REQUEST = 'REJECT_ENROLLMENT_REQUEST'
 export const FETCH_PAST_TRIPS = 'FETCH_PAST_TRIPS'
 export const FETCH_PAST_TRIPS_RESPONSE = 'FETCH_PAST_TRIPS_RESPONSE'
+export const SET_SEARCH_CRITERIA = 'SET_SEARCH_CRITERIA'
+export const FETCH_SEARCHED_TRIPS = 'FETCH_SEARCHED_TRIPS'
+export const FETCH_SEARCHED_TRIPS_RESULT = 'FETCH_SEARCHED_TRIPS_RESULT'
 
 export const addTrip = (token, payload) => ({
     type: ADD_TRIP,
@@ -100,4 +103,24 @@ export const fetchPastTripsResponse = response => ({
     type: FETCH_PAST_TRIPS_RESPONSE,
     status: response.status,
     pastTrips: response.pastTrips
+})
+
+export const setSearchCriteria = (startingPlace, endingPlace, tripDate) => ({
+    type: SET_SEARCH_CRITERIA,
+    searchCriteria: {
+        startingPlace: startingPlace,
+        endingPlace: endingPlace,
+        tripDate: tripDate
+    }
+})
+
+export const fetchSearchedTrips = (criteria) => ({
+    type: FETCH_SEARCHED_TRIPS,
+    searchCriteria: {...criteria}
+})
+
+export const fetchSearchedTripsResult = (response) => ({
+    type: FETCH_SEARCHED_TRIPS_RESULT,
+    status: response.status,
+    matchingTrips: response.matchingTrips
 })

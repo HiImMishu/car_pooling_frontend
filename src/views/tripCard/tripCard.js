@@ -108,32 +108,32 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
         <StyledStepper className="stepper" orientation="vertical" connector={<QontoConnector/>}>
             <Step key={1} completed={true}>
                 <StepLabel StepIconComponent={StartTripIcon}>
-                    <h3 className="stepper-time">{trip.startingPlace}</h3>
+                    <h3 className="stepper-time">{trip?.startingPlace}</h3>
                 </StepLabel>
             </Step>
-            {trip.additionalStops?.length > 0 && <Step key={2} completed={true}>
+            {trip?.additionalStops?.length > 0 && <Step key={2} completed={true}>
                 <StepLabel StepIconComponent={StartTripIcon}>
-                    <h3 className="stepper-time">{trip.additionalStops.join(', ')} <span className="text-secondary">(stacje pośrednie)</span></h3>
+                    <h3 className="stepper-time">{trip?.additionalStops?.join(', ')} <span className="text-secondary">(stacje pośrednie)</span></h3>
                 </StepLabel>
             </Step>}
             <Step key={3} completed={true}>
                 <StepLabel StepIconComponent={FinishTripIcon}>
-                    <h3 className="stepper-time">{trip.endingPlace}</h3>
+                    <h3 className="stepper-time">{trip?.endingPlace}</h3>
                 </StepLabel>
             </Step>
         </StyledStepper>
         <div className="trip-price">
-            <h3>{trip.costPerSeat} zł</h3>
+            <h3>{trip?.costPerSeat} zł</h3>
         </div>
         {isOwner ?
         <div className="card-stats standard-padding">
             <span className="stats-row">
                 <Group fontSize="large"/>
-                <p className="stepper-time">Liczba pasażerów: {trip.enrolledPassengers.length}</p>
+                <p className="stepper-time">Liczba pasażerów: {trip?.enrolledPassengers?.length}</p>
             </span> 
             <span className="stats-row">
                 <AttachMoney fontSize="large"/>
-                <p className="stepper-time">Zaoszczędzone pieniądze: {trip.enrolledPassengers.length * trip.costPerSeat} zł</p>
+                <p className="stepper-time">Zaoszczędzone pieniądze: {trip?.enrolledPassengers?.length * trip?.costPerSeat} zł</p>
             </span> 
         </div> :
         <div className="trip-bottom-row">

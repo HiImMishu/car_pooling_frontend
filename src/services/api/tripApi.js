@@ -277,6 +277,29 @@ const fetchPastTrips = async (token) => {
         })
 }
 
+const fetchMatchingTrips = async (searchCriteria) => {
+    const options = { month: '2-digit', day: '2-digit', year: 'numeric' }
+    const date = new Date(searchCriteria?.tripDate).toLocaleString("pl-PL", options).replace(/\./g, "-")
+    return await axios.get(`${BASE_URL}/trips?startingPlace=${searchCriteria.startingPlace}&endingPlace=${searchCriteria.endingPlace}&tripDate=${date}`)
+        .then(res => {
+            return {
+                status: res.status,
+                matchingTrips: res.data
+            }
+        })
+        .catch(err => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapTripToBody = (payload) => ({
     startingPlace: payload.tripStartPlace,
     endingPlace: payload.tripEndPlace,
@@ -322,7 +345,8 @@ const tripApi = {
     resignFromTrip,
     acceptUserEnrollment,
     rejectUserEnrollment,
-    fetchPastTrips
+    fetchPastTrips,
+    fetchMatchingTrips
 }
 
 export default tripApi

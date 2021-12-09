@@ -140,7 +140,6 @@ const TripComponent = () => {
     const modifyRating = () => {
         setRatingUpdate(true)
         setRatingDialogOpen(true)
-        console.log(isRated)
     }
 
     return <StyledContainer component="main" maxWidth="md" className="trip-container">

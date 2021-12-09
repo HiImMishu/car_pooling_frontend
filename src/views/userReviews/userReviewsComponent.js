@@ -24,7 +24,6 @@ const UserReviewsComponent = () => {
     useEffect(() => {
         dispatch(fetchUserById(userId))
     }, [dispatch, userId])
-    console.log(fetchedUser)
 
     return <StyledContainer component="main" maxWidth="md" className="trip-container">
             <section className="user-profile-header">

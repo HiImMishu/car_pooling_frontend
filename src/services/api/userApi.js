@@ -97,6 +97,56 @@ const updateUser = async (token, payload) => {
         })
 }
 
+const updateRating = async (token, payload) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.put(`${BASE_URL}/ratings`, payload, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
+const addRating = async (token, payload) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.post(`${BASE_URL}/ratings`, payload, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -112,7 +162,7 @@ const mapUserRegistrationBody = (payload) => {
         noAnimals: payload.addInfo[2].checked,
         talkative: payload.addInfo[3].checked,
         music: payload.addInfo[4].checked,
-        autoAccept: payload.addInfo[5].checked,
+        autoAccept: payload.addInfo[5].checked
     }
 }
 
@@ -121,7 +171,9 @@ const userApi = {
     loginUser,
     fetchUser,
     updateUser,
-    fetchUserById
+    fetchUserById,
+    updateRating,
+    addRating
 }
 
 export default userApi

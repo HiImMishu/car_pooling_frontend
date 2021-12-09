@@ -89,8 +89,10 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
     const history = useHistory()
     const activeUser = useSelector(activeUserSelector)
     const isOwner = activeUser?.id === trip?.owner?.id
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric' };
-
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric' }
+    const ratingsLength = trip?.owner?.ratings?.length > 0 ? trip?.owner?.ratings?.length : 1
+    const rating = trip?.owner?.ratings?.map(rating => rating.ratingLevel).reduce((prev, curr) => prev + curr, 0) / ratingsLength
+    
     const navigateToTrip = () => {
         history.push("/search/"+trip.id)
     }
@@ -141,7 +143,7 @@ const TripCard = ({cssClass, searchParameter, trip}) => {
                 <img className="avatar" src={defaultAvatar} alt="Driver avatar"/>
                 <span className="user-row">
                     <h4 className="driver-name">{trip?.owner?.firstName}</h4>
-                    <p className="driver-score"><StarOutline className="score-star"/> 5.0 / 5.0 //ToDo</p>
+                    <p className="driver-score"><StarOutline className="score-star"/>{trip?.owner?.ratings?.length === 0 ? 'Brak ocen' : rating?.toFixed(1) + ' / 5.0'}</p>
                 </span>
             </div>
             <div className="additional-informations">

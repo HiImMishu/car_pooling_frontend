@@ -16,6 +16,7 @@ import noAnimals from '../../assets/images/no-animals.png';
 import noSmoking from '../../assets/images/no-smoking.png';
 import chat from '../../assets/images/chat.png';
 import music from '../../assets/images/musical-notes.png';
+import RatingDialogComponent from "../rating/ratingDialogComponent";
 
 const tripAddInfo = [
     {
@@ -64,6 +65,8 @@ const StyledContainer = withStyles({
 
 const TripComponent = () => {
     const [isOpen, setIsOpen] = useState(false)
+    const [ratingDialogOpen, setRatingDialogOpen] = useState(false)
+    const [ratingUpdate, setRatingUpdate] = useState(false)
     const { id } = useParams()
     const history = useHistory()
     const dispatch = useDispatch()
@@ -74,6 +77,9 @@ const TripComponent = () => {
     const options = { weekday: 'long', day: 'numeric', month: 'long' }
     const alreadyEnrolled = trip?.enrolledPassengers?.find(passenger => passenger.id === activeUser?.id) !== undefined
     const waitingForAccept = trip?.awaitingAcceptation?.find(passenger => passenger.id === activeUser?.id) !== undefined
+    const ownerRatingsLength = trip?.owner?.ratings?.length > 0 ? trip?.owner?.ratings?.length : 1
+    const ownerRating = trip?.owner?.ratings?.map(rating => rating.ratingLevel).reduce((prev, curr) => prev + curr, 0) / ownerRatingsLength
+    const isRated = trip?.owner?.ratings?.find(rating => (rating.passenger.id === activeUser?.id && rating.tripId === trip.id))
 
     useEffect(() => {
         dispatch(fetchTripById(id))
@@ -120,6 +126,23 @@ const TripComponent = () => {
         }
     }
 
+    const calculateRating = (passenger) => {
+        let length = passenger?.ratings?.length > 0 ? passenger?.ratings?.length : 1
+        let rating = passenger?.ratings?.map(rating => rating.ratingLevel).reduce((prev, curr) => prev + curr, 0) / length
+        return passenger?.ratings?.length === 0 ? 'Brak ocen' : rating?.toFixed(1) + ' / 5.0 Liczba ocen - ' + length
+    }
+
+    const addRating = () => {
+        setRatingUpdate(false)
+        setRatingDialogOpen(true)
+    }
+
+    const modifyRating = () => {
+        setRatingUpdate(true)
+        setRatingDialogOpen(true)
+        console.log(isRated)
+    }
+
     return <StyledContainer component="main" maxWidth="md" className="trip-container">
         <h1 className="trip-header-date">{new Date(trip?.tripDate).toLocaleString("pl-PL", options)}</h1>
         <section className="header-section">
@@ -164,7 +187,9 @@ const TripComponent = () => {
             <div className="driver">
                 <span className="user-row">
                     <h4 className="driver-name">{trip?.owner?.firstName}</h4>
-                    <p className="driver-score price-text"><StarOutline className="score-star"/> 5/5 Liczba ocen - 20 //ToDo</p>
+                    <p className="driver-score price-text"><StarOutline className="score-star"/> 
+                        {trip?.owner?.ratings?.length === 0 ? 'Brak ocen' : ownerRating?.toFixed(1) + ' / 5.0 Liczba ocen - ' + ownerRatingsLength}
+                    </p>
                 </span>
             </div>
             <span className="navigate-user">
@@ -222,7 +247,7 @@ const TripComponent = () => {
                     <div className="driver">
                         <span className="user-row">
                             <h4 className="driver-name">{passenger.firstName}</h4>
-                            <p className="driver-score price-text"><StarOutline className="score-star"/> 5/5 Liczba ocen - 20 //ToDo</p>
+                            <p className="driver-score price-text"><StarOutline className="score-star"/>{calculateRating(passenger)}</p>
                         </span>
                     </div>
                     <span className="navigate-user">
@@ -241,7 +266,7 @@ const TripComponent = () => {
                         <div className="driver">
                             <span className="user-row">
                                 <h4 className="driver-name">{passenger.firstName}</h4>
-                                <p className="driver-score price-text"><StarOutline className="score-star"/> 5/5 Liczba ocen - 20 //ToDo</p>
+                                <p className="driver-score price-text"><StarOutline className="score-star"/>{calculateRating(passenger)}</p>
                             </span>
                         </div>
                         <span className="navigate-user">
@@ -258,12 +283,15 @@ const TripComponent = () => {
         </section>}
         {waitingForAccept && <h3 className="text-center">Oczekujesz na zatwierdzenie przez kierowcę.</h3>}
         {!activeUser && <h3 className="text-center">Zaloguj się aby zapisać się na przejazd.</h3>}
-        {(!isOwner && !alreadyEnrolled && new Date(trip?.tripDate) > new Date() && !waitingForAccept && activeUser) &&
+        {(!isOwner && !alreadyEnrolled && new Date(trip?.tripDate) > new Date() && !waitingForAccept && activeUser) && 
         <section className="button-container">
             <Button className="default-button" variant="contained" color="primary" size="medium" onClick={navigateToReservation} endIcon={<NavigateNext/>}>Kontunuuj</Button>
         </section>}
-        {((waitingForAccept || alreadyEnrolled) && new Date(trip?.tripDate) < new Date()) && <section className="button-container mt-1">
-            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resign} endIcon={<NavigateNext/>}>Dodaj ocenę</Button>
+        {((waitingForAccept || alreadyEnrolled) && new Date(trip?.tripDate) < new Date() && !isRated) && <section className="button-container mt-1">
+            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={addRating} endIcon={<NavigateNext/>}>Dodaj ocenę</Button>
+        </section>}
+        {((waitingForAccept || alreadyEnrolled) && new Date(trip?.tripDate) < new Date() && isRated) && <section className="button-container mt-1">
+            <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={modifyRating} endIcon={<NavigateNext/>}>Zmień ocenę</Button>
         </section>}
         {((waitingForAccept || alreadyEnrolled) && new Date(trip?.tripDate) > new Date()) && <section className="button-container mt-1">
             <Button className="default-button" variant="outlined" color="primary" size="medium" onClick={resign} endIcon={<NavigateNext/>}>Rezygnuj</Button>
@@ -278,6 +306,12 @@ const TripComponent = () => {
                 <Button color="primary" onClick={handleDeleteAlertClose}>Anuluj</Button>
             </DialogActions>
         </Dialog>
+        <RatingDialogComponent 
+            isOpen={ratingDialogOpen}
+            setIsOpen={setRatingDialogOpen}
+            isUpdate={ratingUpdate}
+            rating={isRated}
+        />
     </StyledContainer>
 }
 

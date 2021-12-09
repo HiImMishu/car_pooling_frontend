@@ -1,4 +1,6 @@
-import { fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, registerUserResponse, REGISTER_USER, UPDATE_USER } from "../actions/userAction";
+import { showAllert } from "../actions/alertActions";
+import { fetchTripById } from "../actions/tripActions";
+import { ADD_RATING, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -39,6 +41,40 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
                 .then(res => {
                     if (res.status === 200) {
                         dispatch(fetchUserByIdResponse(res.user))
+                    }
+                })
+            break
+        case UPDATE_RATING:
+            api.userApi.updateRating(action.token, action.payload)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 200) {
+                        let alertProps = {
+                            open: true,
+                            type: "success",
+                            button: null,
+                            message: "Ocena została zaktualizowana."
+                        }
+                        dispatch(showAllert(alertProps))
+                        dispatch(fetchTripById(action.payload.tripId))
+                    }
+                })
+            break
+        case ADD_RATING:
+            api.userApi.addRating(action.token, action.payload)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 201) {
+                        let alertProps = {
+                            open: true,
+                            type: "success",
+                            button: null,
+                            message: "Ocena została dodana."
+                        }
+                        dispatch(showAllert(alertProps))
+                        dispatch(fetchTripById(action.payload.tripId))
                     }
                 })
             break

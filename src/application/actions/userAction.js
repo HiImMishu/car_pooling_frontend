@@ -10,6 +10,8 @@ export const FETCH_USER_BY_ID = 'FETCH_USER_BY_ID'
 export const FETCH_USER_BY_ID_RESPONSE = 'FETCH_USER__BY_ID_RESPONSE'
 export const LOGOUT = 'LOG_OUT'
 export const UPDATE_USER = 'UPDATE_USER'
+export const UPDATE_RATING = 'UPDATE_RATING'
+export const ADD_RATING = 'ADD_RATING'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -66,6 +68,18 @@ export const logout = ({
 
 export const updateUser = (payload, token) => ({
     type: UPDATE_USER,
+    payload: payload,
+    token: token
+})
+
+export const updateRating = (payload, token) => ({
+    type: UPDATE_RATING,
+    payload: payload,
+    token: token
+})
+
+export const addRating = (payload, token) => ({
+    type: ADD_RATING,
     payload: payload,
     token: token
 })

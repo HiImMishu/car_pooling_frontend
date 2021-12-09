@@ -68,6 +68,8 @@ const UserInformationComponent = () => {
     const fetchedUser = useSelector(fetchedUserSelector)
     const options = { month: 'long', year: 'numeric' }
     const token = useSelector(tokenSelector)
+    const ratingsLength = fetchedUser?.ratings?.length > 0 ? fetchedUser?.ratings?.length : 1
+    const rating = fetchedUser?.ratings?.map(rating => rating.ratingLevel).reduce((prev, curr) => prev + curr, 0) / ratingsLength
 
     useEffect(() => {
         dispatch(fetchUserById(userId))
@@ -86,7 +88,9 @@ const UserInformationComponent = () => {
             <section className="trip-driver" onClick={navigateToReviews}>
                 <div className="driver">
                     <span className="user-row">
-                        <h3 className="user-reviews text-secondary"><StarOutline className="score-star" fontSize="large"/> 5/5 Liczba ocen - 20 //ToDo</h3>
+                        <h3 className="user-reviews text-secondary"><StarOutline className="score-star" fontSize="large"/>
+                            {fetchedUser?.ratings?.length === 0 ? 'Brak ocen' : rating?.toFixed(1) + ' / 5.0 Liczba ocen - ' + ratingsLength}
+                        </h3>
                     </span>
                 </div>
                 <span className="navigate-user">

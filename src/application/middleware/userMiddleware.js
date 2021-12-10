@@ -1,6 +1,6 @@
 import { showAllert } from "../actions/alertActions";
 import { fetchTripById } from "../actions/tripActions";
-import { ADD_RATING, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
+import { ADD_RATING, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -75,6 +75,16 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
                         }
                         dispatch(showAllert(alertProps))
                         dispatch(fetchTripById(action.payload.tripId))
+                    }
+                })
+            break
+        case READ_NOTIFICATION:
+            api.userApi.dismissNotification(action.token, action.notificationId)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 204) {
+                        dispatch(notificationIsRead(action.notificationId))
                     }
                 })
             break

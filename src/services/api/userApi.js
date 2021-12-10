@@ -147,6 +147,31 @@ const addRating = async (token, payload) => {
         })
 }
 
+const dismissNotification = async (token, notificationId) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.put(`${BASE_URL}/notifications/${notificationId}`, {id: notificationId, isRead: true}, config)
+        .then(res => {
+            return {
+                status: res.status
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -173,7 +198,8 @@ const userApi = {
     updateUser,
     fetchUserById,
     updateRating,
-    addRating
+    addRating,
+    dismissNotification
 }
 
 export default userApi

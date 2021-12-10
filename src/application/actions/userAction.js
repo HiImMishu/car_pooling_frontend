@@ -12,6 +12,8 @@ export const LOGOUT = 'LOG_OUT'
 export const UPDATE_USER = 'UPDATE_USER'
 export const UPDATE_RATING = 'UPDATE_RATING'
 export const ADD_RATING = 'ADD_RATING'
+export const READ_NOTIFICATION = 'READ_NOTIFICATION'
+export const NOTIFICATION_IS_READ = 'NOTIFICATION_IS_READ'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -82,4 +84,15 @@ export const addRating = (payload, token) => ({
     type: ADD_RATING,
     payload: payload,
     token: token
+})
+
+export const readNotification = (token, notificationId) => ({
+    type: READ_NOTIFICATION,
+    token: token,
+    notificationId: notificationId
+})
+
+export const notificationIsRead = (notificationId) => ({
+    type: NOTIFICATION_IS_READ,
+    notificationId: notificationId
 })

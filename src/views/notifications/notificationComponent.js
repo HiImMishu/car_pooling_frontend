@@ -1,11 +1,21 @@
 import { Divider, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { readNotification } from "../../application/actions/userAction";
+import { tokenSelector } from "../../application/selectors/userSelector";
 
 
-const NotificationComponent = ({notification, closeDrawer}) => {
+const NotificationComponent = ({notification, closeDrawer, element}) => {
+    const dispatch = useDispatch()
+    const token = useSelector(tokenSelector)
+
+    const handleClick = () => {
+        dispatch(readNotification(token, element.id))
+        closeDrawer()
+    }
 
     return <>
-        <ListItem button onClick={closeDrawer} component={Link} to={notification.link} alignItems="flex-start">
+        <ListItem button onClick={handleClick} component={Link} to={notification.link} alignItems="flex-start">
             <ListItemIcon>
                 {notification.icon}
             </ListItemIcon>

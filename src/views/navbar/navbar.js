@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import './styles.css';
 import NotificationsComponent from '../notifications/NotificationsComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { tokenSelector } from '../../application/selectors/userSelector';
+import { notificationsSelector, tokenSelector } from '../../application/selectors/userSelector';
 import { logout } from '../../application/actions/userAction';
 
 const styles = makeStyles((theme) => ({
@@ -87,6 +87,7 @@ const Navbar = () => {
     const [notificationComponentVisible, setNotificationComponentVisible] = useState(false)
     const authenticated = useSelector(tokenSelector)
     const dispatch = useDispatch()
+    const notifications = useSelector(notificationsSelector)
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -180,7 +181,7 @@ const Navbar = () => {
             setNotificationComponentVisible(!notificationComponentVisible)
         }}>
             <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
+            <Badge badgeContent={notifications?.filter(notification => !notification.isRead)?.length} color="secondary">
                 <Notifications />
             </Badge>
             </IconButton>
@@ -223,7 +224,7 @@ const Navbar = () => {
                                 handleMobileMenuClose()
                                 setNotificationComponentVisible(!notificationComponentVisible)
                             }}>
-                            <Badge badgeContent={17} color="secondary">
+                            <Badge badgeContent={notifications?.filter(notification => !notification.isRead)?.length} color="secondary">
                                 <Notifications />
                             </Badge>
                             </IconButton>

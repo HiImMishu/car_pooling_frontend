@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import "./styles.css";
 import NotificationComponent from "./notificationComponent";
 import { PersonAdd, VerifiedUser, PersonAddDisabled, DeleteOutline, StarOutline, PersonPin, Block } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import { notificationsSelector } from "../../application/selectors/userSelector";
 
 const useStyles = makeStyles(() => ({
     drawer: {
@@ -20,48 +22,60 @@ const useStyles = makeStyles(() => ({
   }));
 
 const NotificationsComponent = ({isOpen, setIsOpen}) => {
-    const classes = useStyles();
-    const userEnrolled = {
-      icon: <PersonAdd className="icon-font-color-blue" fontSize="large"/>,
-      header: "Nowy Pasażer!",
-      message: "Krzysztof Matczak zapisał się na Twój przejazd.",
-      link: "/search/2"
+    const notifications = useSelector(notificationsSelector)
+    const classes = useStyles()
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
+
+    const mapTypeToIcon = (type) => {
+      switch (type) {
+        case 'NEW_PASSENGER': return <PersonAdd className="icon-font-color-blue" fontSize="large"/>
+        case 'GOT_ACCEPTED': return <VerifiedUser className="icon-font-color-green" fontSize="large"/>
+        case 'PASSENGER_RESIGNED': return <PersonAddDisabled className="icon-font-color-red" fontSize="large"/>
+        case 'TRIP_DELETED': return <DeleteOutline className="icon-font-color-red" fontSize="large"/>
+        case 'NEW_RATING': return <StarOutline className="icon-font-color-gold" fontSize="large"/>
+        case 'ACCEPTATION_REQUEST': return <PersonPin className="icon-font-color-blue" fontSize="large"/>
+        case 'REQUEST_REJECTED': return <Block className="icon-font-color-red" fontSize="large"/>
+        default: return ""
+      }
     }
-    const enrollmentAgreed = {
-      icon: <VerifiedUser className="icon-font-color-green" fontSize="large"/>,
-      header: "Zaakceptowano Podróż!",
-      message: "Marcin Najman dodał Cię do przejazdu w kierunku Warszawa.",
-      link: "/search/2"
+
+    const mapTypeToHeader = (type) => {
+      switch (type) {
+        case 'NEW_PASSENGER': return "Nowy pasażer!"
+        case 'GOT_ACCEPTED': return "Zaakceptowano Podróż!"
+        case 'PASSENGER_RESIGNED': return "Pasażer zrezygnował."
+        case 'TRIP_DELETED': return "Usunięto przejazd."
+        case 'NEW_RATING': return "Nowa ocena!"
+        case 'ACCEPTATION_REQUEST': return "Prośba o potwierdzenie!"
+        case 'REQUEST_REJECTED': return "Odrzucono Twoją prośbę!"
+        default: return ""
+      }
     }
-    const enrollmentResignation = {
-      icon: <PersonAddDisabled className="icon-font-color-red" fontSize="large"/>,
-      header: "Pasażer zrezygnował.",
-      message: "Krzysztof Ibisz zrezygnował z podróży w kierunku Wrocław.",
-      link: "/search/2"
+
+    const mapNotificationMessage = (notification) => {
+      switch (notification.type) {
+        case 'NEW_PASSENGER': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} zapisał/-a się na Twój przejazd.`
+        case 'GOT_ACCEPTED': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} zaakceptował/-a twoją prośbę o przejazd!`
+        case 'PASSENGER_RESIGNED': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} zrezygnował/-a z podróży w kierunku Wrocław.`
+        case 'TRIP_DELETED': return `Przejazd w dniu ${new Date(notification?.trip?.tripDate).toLocaleString("pl-PL", options)} został odwołany.`
+        case 'NEW_RATING': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} XYZ wystawił/-a nową ocenę na Twoim profilu!`
+        case 'ACCEPTATION_REQUEST': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} prosi o dodanie do przejazdu.`
+        case 'REQUEST_REJECTED': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} nie zaakceptował/-a Twojej prośby o dołączenie do przejazdu.`
+        default: return ""
+      }
     }
-    const tripDeleted = {
-      icon: <DeleteOutline className="icon-font-color-red" fontSize="large"/>,
-      header: "Usunięto przejazd.",
-      message: "Przejazd w kierunku Kraków w dniu 23/02/2021 został odwołany.",
-      link: "/"
-    }
-    const newScore = {
-      icon: <StarOutline className="icon-font-color-gold" fontSize="large"/>,
-      header: "Nowa ocena!",
-      message: "Użytkownik Elżbieta XYZ wystawił nową ocenę na Twoim profilu.",
-      link: "/user/:userId/reviews"
-    }
-    const newPassangerRequest = {
-      icon: <PersonPin className="icon-font-color-blue" fontSize="large"/>,
-      header: "Prośba o potwierdzenie!",
-      message: "Użytkownik Piotr Kosieradzki prosi o dodanie do przejazdu.",
-      link: "/search/2"
-    }
-    const newPassangerBlock = {
-      icon: <Block className="icon-font-color-red" fontSize="large"/>,
-      header: "Odrzucono Twoją prośbę!",
-      message: "Użytkownik Szymon Steczkowski nie zaakceptował Twojej prośby o dołączenie do przejazdu.",
-      link: "/search/2"
+
+    const mapNotificationToLink = (notification) => {
+      switch (notification.type) {
+        case 'NEW_PASSENGER': return `/search/${notification.trip.id}`
+        case 'GOT_ACCEPTED': return `/search/${notification.trip.id}`
+        case 'PASSENGER_RESIGNED': return `/search/${notification.trip.id}`
+        case 'TRIP_DELETED': return "/"
+        case 'NEW_RATING': return `/user/${notification.notificationOwner.id}/reviews`
+        case 'ACCEPTATION_REQUEST': return `/search/${notification.trip.id}`
+        case 'REQUEST_REJECTED': return `/search/${notification.trip.id}`
+        default: return ""
+      }
     }
 
     return <Drawer
@@ -76,14 +90,15 @@ const NotificationsComponent = ({isOpen, setIsOpen}) => {
       >
           <Toolbar />
           <List className={classes.drawerContainer}>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={userEnrolled}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={enrollmentAgreed}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={enrollmentResignation}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={tripDeleted}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={newScore}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={newPassangerRequest}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={newPassangerBlock}/>
-            <NotificationComponent closeDrawer={() => setIsOpen(false)} notification={userEnrolled}/>
+            {notifications.map(n => {
+              const notification = {
+                icon: mapTypeToIcon(n.type),
+                header: mapTypeToHeader(n.type),
+                message: mapNotificationMessage(n),
+                link: mapNotificationToLink(n)
+              }
+              return <NotificationComponent element={n} key={n.id} closeDrawer={() => setIsOpen(false)} notification={notification}/>
+            })}
           </List>
     </Drawer>
 }

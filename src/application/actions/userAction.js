@@ -14,6 +14,7 @@ export const UPDATE_RATING = 'UPDATE_RATING'
 export const ADD_RATING = 'ADD_RATING'
 export const READ_NOTIFICATION = 'READ_NOTIFICATION'
 export const NOTIFICATION_IS_READ = 'NOTIFICATION_IS_READ'
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -95,4 +96,9 @@ export const readNotification = (token, notificationId) => ({
 export const notificationIsRead = (notificationId) => ({
     type: NOTIFICATION_IS_READ,
     notificationId: notificationId
+})
+
+export const addNotification = (notification) => ({
+    type: ADD_NOTIFICATION,
+    notification: notification
 })

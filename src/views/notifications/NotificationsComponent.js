@@ -67,13 +67,13 @@ const NotificationsComponent = ({isOpen, setIsOpen}) => {
 
     const mapNotificationToLink = (notification) => {
       switch (notification.type) {
-        case 'NEW_PASSENGER': return `/search/${notification.trip.id}`
-        case 'GOT_ACCEPTED': return `/search/${notification.trip.id}`
-        case 'PASSENGER_RESIGNED': return `/search/${notification.trip.id}`
+        case 'NEW_PASSENGER': return `/search/${notification.tripId}`
+        case 'GOT_ACCEPTED': return `/search/${notification.tripId}`
+        case 'PASSENGER_RESIGNED': return `/search/${notification.tripId}`
         case 'TRIP_DELETED': return "/"
         case 'NEW_RATING': return `/user/${notification.notificationOwner.id}/reviews`
-        case 'ACCEPTATION_REQUEST': return `/search/${notification.trip.id}`
-        case 'REQUEST_REJECTED': return `/search/${notification.trip.id}`
+        case 'ACCEPTATION_REQUEST': return `/search/${notification.tripId}`
+        case 'REQUEST_REJECTED': return `/search/${notification.tripId}`
         default: return ""
       }
     }
@@ -90,7 +90,7 @@ const NotificationsComponent = ({isOpen, setIsOpen}) => {
       >
           <Toolbar />
           <List className={classes.drawerContainer}>
-            {notifications.map(n => {
+            {notifications?.filter(n => !n.isRead)?.map(n => {
               const notification = {
                 icon: mapTypeToIcon(n.type),
                 header: mapTypeToHeader(n.type),

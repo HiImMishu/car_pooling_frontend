@@ -22,7 +22,7 @@ import { Close } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { closeAlert } from './application/actions/alertActions';
 import { tokenSelector } from './application/selectors/userSelector';
-import { fetchUser, initializeToken } from './application/actions/userAction';
+import { addNotification, fetchUser, initializeToken } from './application/actions/userAction';
 import PrivateRoute from './privateRoute';
 import EnrolledTripsComponent from './views/enrolledTrips/enrolledTripsComponent';
 import PastTripsComponent from './views/pastTrips/pastTripsComponent';
@@ -58,7 +58,7 @@ function App() {
 
       client.connect({"X-Authorization": "Bearer " + token}, _frame => {
         client.subscribe(`/user/queue/notifications`, message => {
-          console.log("halo: ", message)
+          dispatch(addNotification(message.body))
         })
       })
     } 

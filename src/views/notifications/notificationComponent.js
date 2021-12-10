@@ -8,7 +8,6 @@ import { tokenSelector } from "../../application/selectors/userSelector";
 const NotificationComponent = ({notification, closeDrawer, element}) => {
     const dispatch = useDispatch()
     const token = useSelector(tokenSelector)
-    console.log("Element: ", element)
 
     const handleClick = () => {
         dispatch(readNotification(token, element.id))

@@ -57,7 +57,7 @@ const NotificationsComponent = ({isOpen, setIsOpen}) => {
         case 'NEW_PASSENGER': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} zapisał/-a się na Twój przejazd.`
         case 'GOT_ACCEPTED': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} zaakceptował/-a twoją prośbę o przejazd!`
         case 'PASSENGER_RESIGNED': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} zrezygnował/-a z podróży w kierunku Wrocław.`
-        case 'TRIP_DELETED': return `Przejazd w dniu ${new Date(notification?.trip?.tripDate).toLocaleString("pl-PL", options)} został odwołany.`
+        case 'TRIP_DELETED': return `Przejazd z użytkownikiem ${notification.notificationOwner?.firstName} ${notification.notificationOwner?.lastName} został odwołany.`
         case 'NEW_RATING': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} XYZ wystawił/-a nową ocenę na Twoim profilu!`
         case 'ACCEPTATION_REQUEST': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} prosi o dodanie do przejazdu.`
         case 'REQUEST_REJECTED': return `${notification.actionTaker.firstName} ${notification.actionTaker.lastName} nie zaakceptował/-a Twojej prośby o dołączenie do przejazdu.`
@@ -67,13 +67,13 @@ const NotificationsComponent = ({isOpen, setIsOpen}) => {
 
     const mapNotificationToLink = (notification) => {
       switch (notification.type) {
-        case 'NEW_PASSENGER': return `/search/${notification.tripId}`
-        case 'GOT_ACCEPTED': return `/search/${notification.tripId}`
-        case 'PASSENGER_RESIGNED': return `/search/${notification.tripId}`
+        case 'NEW_PASSENGER': return `/search/${notification.trip.id}`
+        case 'GOT_ACCEPTED': return `/search/${notification.trip.id}`
+        case 'PASSENGER_RESIGNED': return `/search/${notification.trip.id}`
         case 'TRIP_DELETED': return "/"
         case 'NEW_RATING': return `/user/${notification.notificationOwner.id}/reviews`
-        case 'ACCEPTATION_REQUEST': return `/search/${notification.tripId}`
-        case 'REQUEST_REJECTED': return `/search/${notification.tripId}`
+        case 'ACCEPTATION_REQUEST': return `/search/${notification.trip.id}`
+        case 'REQUEST_REJECTED': return `/search/${notification.trip.id}`
         default: return ""
       }
     }

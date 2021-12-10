@@ -1,7 +1,7 @@
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { alertSelector } from './application/selectors/alertSelector';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import HomeComponent from './views/home/homeComponent';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './views/navbar/navbar';
@@ -26,12 +26,16 @@ import { fetchUser, initializeToken } from './application/actions/userAction';
 import PrivateRoute from './privateRoute';
 import EnrolledTripsComponent from './views/enrolledTrips/enrolledTripsComponent';
 import PastTripsComponent from './views/pastTrips/pastTripsComponent';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs'
 
 function App() {
   const alert = useSelector(alertSelector)
   const dispatch = useDispatch()
   const token = useSelector(tokenSelector)
-
+  const [stompClient, setStompClient] = useState(null) 
+  const [socket, setSocket] = useState(null)
+  
   const hideAlert = () => {
     dispatch(closeAlert)
   }
@@ -39,6 +43,26 @@ function App() {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
+
+  useEffect(() => {
+    if (socket === null && token) {
+      const soc = new SockJS('http://localhost:8080/looping')
+      setSocket(soc)
+    }
+  }, [socket, token])
+
+  useEffect(() => {
+    if (socket !== null && token && !stompClient?.connected) {
+      const client = Stomp.over(socket)
+      setStompClient(client)
+
+      client.connect({"X-Authorization": "Bearer " + token}, _frame => {
+        client.subscribe(`/user/queue/notifications`, message => {
+          console.log("halo: ", message)
+        })
+      })
+    } 
+  }, [token, socket, stompClient?.connected])
 
   useEffect(() => {
       let localToken = localStorage.getItem('Token')
@@ -55,6 +79,11 @@ function App() {
       if (token) {
         dispatch(fetchUser(token))
       }
+      if(token === null && stompClient?.connected) {
+        stompClient.disconnect(null, {"X-Authorization": "Bearer " + localToken})
+        socket.close()
+        setSocket(null)
+      } 
       if (token === null) {
         localStorage.removeItem('Token')
       }

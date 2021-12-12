@@ -24,7 +24,6 @@ const useStyles = makeStyles(() => ({
 const NotificationsComponent = ({isOpen, setIsOpen}) => {
     const notifications = useSelector(notificationsSelector)
     const classes = useStyles()
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
 
     const mapTypeToIcon = (type) => {
       switch (type) {

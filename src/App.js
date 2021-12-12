@@ -140,9 +140,7 @@ function App() {
             <PrivateRoute exact path="/my-trips" component={UserTripsComponent}/>
             <PrivateRoute exact path="/past-trips" component={PastTripsComponent}/>
             <PrivateRoute exact path="/my-enrollments" component={EnrolledTripsComponent}/>
-            <Route exact path="/messages">
-              <MessagesComponent/>
-            </Route>
+            <PrivateRoute exact path="/messages" component={MessagesComponent}/>
             <Route exact path="/login">
               <LoginComponent/>
             </Route>

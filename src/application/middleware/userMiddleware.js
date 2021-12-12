@@ -1,6 +1,6 @@
 import { showAllert } from "../actions/alertActions";
 import { fetchTripById } from "../actions/tripActions";
-import { ADD_RATING, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
+import { ADD_RATING, fetchInitialMessagesResult, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_INITIAL_MESSAGES, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -85,6 +85,16 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(logout)
                     } else if(res.status === 204) {
                         dispatch(notificationIsRead(action.notificationId))
+                    }
+                })
+            break
+        case FETCH_INITIAL_MESSAGES:
+            api.userApi.fetchInitialMessages(action.token)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 200) {
+                        dispatch(fetchInitialMessagesResult(res.messages))
                     }
                 })
             break

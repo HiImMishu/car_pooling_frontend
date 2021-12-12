@@ -15,6 +15,8 @@ export const ADD_RATING = 'ADD_RATING'
 export const READ_NOTIFICATION = 'READ_NOTIFICATION'
 export const NOTIFICATION_IS_READ = 'NOTIFICATION_IS_READ'
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
+export const FETCH_INITIAL_MESSAGES = 'FETCH_INITIAL_MESSAGES'
+export const FETCH_INITIAL_MESSAGES_RESULT = 'FETCH_INITIAL_MESSAGES_RESULT'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -101,4 +103,14 @@ export const notificationIsRead = (notificationId) => ({
 export const addNotification = (notification) => ({
     type: ADD_NOTIFICATION,
     notification: notification
+})
+
+export const fetchInitialMessages = (token) => ({
+    type: FETCH_INITIAL_MESSAGES,
+    token: token
+})
+
+export const fetchInitialMessagesResult = (messages) => ({
+    type: FETCH_INITIAL_MESSAGES_RESULT,
+    initialMessages: messages
 })

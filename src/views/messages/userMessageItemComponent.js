@@ -1,14 +1,21 @@
-import { Divider, ListItem, ListItemAvatar, ListItemText, Avatar } from "@material-ui/core";
+import { Divider, ListItem, ListItemAvatar, ListItemText, Avatar, makeStyles } from "@material-ui/core";
 import defaultAvatar from '../../assets/images/default-avatar.jpg';
 
-const UserMessageItemComponent = ({selectedItem, setSelectedItem, index}) => {
-    const message = "Cześć, czy mogę zabrać walizkę podczas wyjazdu do Warszawy? Bo wczoraj nie miałem takiej mozliwości przez telefon no i nie zapytałem"
+const useStyles = makeStyles(() => ({
+    secondary: {
+        color: "#000000",
+        fontWeight: "600"
+    }
+  }))
+
+const UserMessageItemComponent = ({selectedItem, setSelectedItem, message}) => {
+    const styles = useStyles()
 
     return <>
         <ListItem 
             button 
-            selected={selectedItem === index}
-            onClick={() => setSelectedItem(index)}
+            selected={selectedItem === message.id}
+            onClick={() => setSelectedItem(message.id)}
             alignItems="flex-start"
         >
             <ListItemAvatar>
@@ -16,8 +23,11 @@ const UserMessageItemComponent = ({selectedItem, setSelectedItem, index}) => {
             </ListItemAvatar>
             <ListItemText
                 className="hide-sm"
-                primary="Marek Stępolski"
-                secondary={message.length > 100 ? message.substr(0, 56) + "..." : message}
+                classes={{
+                    secondary: !message.isRead ? styles.secondary : ""
+                }}
+                primary={`${message.sender.firstName}  ${message.sender.lastName}`}
+                secondary={message.content > 100 ? message.content.substr(0, 56) + "..." : message.content}
             />
         </ListItem>
         <Divider variant="inset" component="li"/>

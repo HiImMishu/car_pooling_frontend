@@ -1,5 +1,8 @@
 import { List, TextField } from "@material-ui/core";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchInitialMessages } from "../../application/actions/userAction";
+import { initialMessagesSelector, tokenSelector } from "../../application/selectors/userSelector";
 import LeftMessageComponent from "./leftMessageComponent";
 import RightMessageComponent from "./rightMessageComponent";
 import "./styles.css";
@@ -8,6 +11,15 @@ import UserMessageItemComponent from "./userMessageItemComponent";
 const MessagesComponent = () => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [message, setMessage] = useState("")
+    const dispatch = useDispatch()
+    const token = useSelector(tokenSelector)
+    const initialMessages = useSelector(initialMessagesSelector)
+
+    useEffect(() => {
+        if (token) {
+            dispatch(fetchInitialMessages(token))
+        }
+    }, [token, dispatch])
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -31,10 +43,8 @@ const MessagesComponent = () => {
     />
 
     const userList = useMemo(() => {
-        return Array.from(Array(50).keys()).map((index) => {
-            return <UserMessageItemComponent selectedItem={selectedIndex} setSelectedItem={setSelectedIndex} index={index}/>
-            })
-    }, [selectedIndex])
+        return initialMessages?.map(message => <UserMessageItemComponent key={message.sender.id} selectedItem={selectedIndex} setSelectedItem={setSelectedIndex} message={message}/>)
+    }, [selectedIndex, initialMessages])
     
     const messagesList = useMemo(() => {
         return Array.from(Array(50).keys()).map(index => {

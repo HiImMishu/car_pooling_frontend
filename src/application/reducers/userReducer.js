@@ -1,4 +1,4 @@
-import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, FETCH_USER_BY_ID_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE, NOTIFICATION_IS_READ, ADD_NOTIFICATION } from "../actions/userAction";
+import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, FETCH_USER_BY_ID_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE, NOTIFICATION_IS_READ, ADD_NOTIFICATION, FETCH_INITIAL_MESSAGES_RESULT } from "../actions/userAction";
 
 const initialState = {
     token: null,
@@ -26,6 +26,8 @@ const userReducer = (state = initialState, action) => {
         case ADD_NOTIFICATION:
             const notification = JSON.parse(action.notification)
             return {...state, notifications: [...state.notifications.filter(n => parseInt(n.id) !== parseInt(notification.id)), notification]}
+        case FETCH_INITIAL_MESSAGES_RESULT:
+            return {...state, initialMessages: action.initialMessages}
         default:
             return state
     }

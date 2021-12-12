@@ -1,6 +1,6 @@
 import { showAllert } from "../actions/alertActions";
 import { fetchTripById } from "../actions/tripActions";
-import { ADD_RATING, fetchInitialMessagesResult, fetchPageOfMessagesResponse, fetchUnreadMessagesCountResponse, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_INITIAL_MESSAGES, FETCH_PAGE_OF_MESSAGES, FETCH_UNREAD_MESSAGES_COUNT, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
+import { ADD_RATING, fetchInitialMessagesResult, fetchPageOfMessagesResponse, fetchUnreadMessagesCount, fetchUnreadMessagesCountResponse, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_INITIAL_MESSAGES, FETCH_PAGE_OF_MESSAGES, FETCH_UNREAD_MESSAGES_COUNT, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, MARK_THREAD_AS_READ, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -115,6 +115,16 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(logout)
                     } else if(res.status === 200) {
                         dispatch(fetchUnreadMessagesCountResponse(res.count))
+                    }
+                })
+            break
+        case MARK_THREAD_AS_READ:
+            api.userApi.markThreadAsRead(action.token, action.threadId)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if(res.status === 204) {
+                        dispatch(fetchUnreadMessagesCount(action.token))
                     }
                 })
             break

@@ -1,7 +1,7 @@
 import { List, TextField } from "@material-ui/core";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchInitialMessages, fetchPageOfMessages } from "../../application/actions/userAction";
+import { fetchInitialMessages, fetchPageOfMessages, markThreadAsRead } from "../../application/actions/userAction";
 import { initialMessagesSelector, messagesSelector, tokenSelector } from "../../application/selectors/userSelector";
 import LeftMessageComponent from "./leftMessageComponent";
 import RightMessageComponent from "./rightMessageComponent";
@@ -30,6 +30,7 @@ const MessagesComponent = () => {
 
     useEffect(() => {
         if (token && selectedIndex !== -1) {
+            dispatch(markThreadAsRead(token, selectedIndex))
             dispatch(fetchPageOfMessages(token, 50, 0, selectedIndex))
         }
     }, [token, selectedIndex, dispatch])

@@ -21,6 +21,7 @@ export const FETCH_PAGE_OF_MESSAGES = 'FETCH_PAGE_OF_MESSAGES'
 export const FETCH_PAGE_OF_MESSAGES_RESPONSE = 'FETCH_PAGE_OF_MESSAGES_RESPONSE'
 export const FETCH_UNREAD_MESSAGES_COUNT = 'FETCH_UNREAD_MESSAGES_COUNT'
 export const FETCH_UNREAD_MESSAGES_COUNT_RESPONSE = 'FETCH_UNREAD_MESSAGES_COUNT_RESPONSE'
+export const MARK_THREAD_AS_READ = 'MARK_THREAD_AS_READ'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -141,4 +142,10 @@ export const fetchUnreadMessagesCount = (token) => ({
 export const fetchUnreadMessagesCountResponse = (count) => ({
     type: FETCH_UNREAD_MESSAGES_COUNT_RESPONSE,
     count: count
+})
+
+export const markThreadAsRead = (token, threadId) => ({
+    type: MARK_THREAD_AS_READ,
+    token: token,
+    threadId: threadId
 })

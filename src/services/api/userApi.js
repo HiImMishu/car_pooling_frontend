@@ -224,6 +224,32 @@ const fetchPageOfMessages = async (token, id, size, number) => {
         })
 }
 
+const fetchUnreadMessagesCount = async (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.get(`${BASE_URL}/messages/unread`, config)
+        .then(res => {
+            return {
+                status: res.status,
+                count: res.data
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -253,7 +279,8 @@ const userApi = {
     addRating,
     dismissNotification,
     fetchInitialMessages,
-    fetchPageOfMessages
+    fetchPageOfMessages,
+    fetchUnreadMessagesCount
 }
 
 export default userApi

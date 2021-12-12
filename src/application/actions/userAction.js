@@ -19,6 +19,8 @@ export const FETCH_INITIAL_MESSAGES = 'FETCH_INITIAL_MESSAGES'
 export const FETCH_INITIAL_MESSAGES_RESULT = 'FETCH_INITIAL_MESSAGES_RESULT'
 export const FETCH_PAGE_OF_MESSAGES = 'FETCH_PAGE_OF_MESSAGES'
 export const FETCH_PAGE_OF_MESSAGES_RESPONSE = 'FETCH_PAGE_OF_MESSAGES_RESPONSE'
+export const FETCH_UNREAD_MESSAGES_COUNT = 'FETCH_UNREAD_MESSAGES_COUNT'
+export const FETCH_UNREAD_MESSAGES_COUNT_RESPONSE = 'FETCH_UNREAD_MESSAGES_COUNT_RESPONSE'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -129,4 +131,14 @@ export const fetchPageOfMessagesResponse = (response) => ({
     type: FETCH_PAGE_OF_MESSAGES_RESPONSE,
     page: response.messages,
     id: response.id
+})
+
+export const fetchUnreadMessagesCount = (token) => ({
+    type: FETCH_UNREAD_MESSAGES_COUNT,
+    token: token
+})
+
+export const fetchUnreadMessagesCountResponse = (count) => ({
+    type: FETCH_UNREAD_MESSAGES_COUNT_RESPONSE,
+    count: count
 })

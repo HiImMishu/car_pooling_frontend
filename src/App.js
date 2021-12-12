@@ -22,7 +22,7 @@ import { Close } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { closeAlert } from './application/actions/alertActions';
 import { tokenSelector } from './application/selectors/userSelector';
-import { addNotification, fetchUser, initializeToken } from './application/actions/userAction';
+import { addNotification, fetchUnreadMessagesCount, fetchUser, initializeToken } from './application/actions/userAction';
 import PrivateRoute from './privateRoute';
 import EnrolledTripsComponent from './views/enrolledTrips/enrolledTripsComponent';
 import PastTripsComponent from './views/pastTrips/pastTripsComponent';
@@ -78,6 +78,7 @@ function App() {
       }
       if (token) {
         dispatch(fetchUser(token))
+        dispatch(fetchUnreadMessagesCount(token))
       }
       if(token === null && stompClient?.connected) {
         stompClient.disconnect(null, {"X-Authorization": "Bearer " + localToken})

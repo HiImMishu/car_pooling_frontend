@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import './styles.css';
 import NotificationsComponent from '../notifications/NotificationsComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { notificationsSelector, tokenSelector } from '../../application/selectors/userSelector';
+import { notificationsSelector, tokenSelector, unreadCountSelector } from '../../application/selectors/userSelector';
 import { logout } from '../../application/actions/userAction';
 
 const styles = makeStyles((theme) => ({
@@ -88,6 +88,7 @@ const Navbar = () => {
     const authenticated = useSelector(tokenSelector)
     const dispatch = useDispatch()
     const notifications = useSelector(notificationsSelector)
+    const unreadCount = useSelector(unreadCountSelector)
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -169,7 +170,7 @@ const Navbar = () => {
         </MenuItem>
         {authenticated && <MenuItem component={Link} to="/messages">
             <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={unreadCount} color="secondary">
                 <Mail />
             </Badge>
             </IconButton>
@@ -215,7 +216,7 @@ const Navbar = () => {
                         <Button component={Link} to="/add-trip" color="inherit"><Add/> Dodaj przejazd</Button>
                         {authenticated && <>
                             <IconButton  component={Link} to="/messages" color="inherit">
-                            <Badge badgeContent={4} color="secondary">
+                            <Badge badgeContent={unreadCount} color="secondary">
                                 <Mail />
                             </Badge>
                             </IconButton>

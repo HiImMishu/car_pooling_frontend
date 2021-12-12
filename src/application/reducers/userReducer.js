@@ -1,4 +1,4 @@
-import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, FETCH_USER_BY_ID_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE, NOTIFICATION_IS_READ, ADD_NOTIFICATION, FETCH_INITIAL_MESSAGES_RESULT, FETCH_PAGE_OF_MESSAGES_RESPONSE } from "../actions/userAction";
+import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, FETCH_USER_BY_ID_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE, NOTIFICATION_IS_READ, ADD_NOTIFICATION, FETCH_INITIAL_MESSAGES_RESULT, FETCH_PAGE_OF_MESSAGES_RESPONSE, FETCH_UNREAD_MESSAGES_COUNT_RESPONSE } from "../actions/userAction";
 
 const initialState = {
     token: null,
@@ -31,6 +31,8 @@ const userReducer = (state = initialState, action) => {
             return {...state, initialMessages: action.initialMessages}
         case FETCH_PAGE_OF_MESSAGES_RESPONSE:
             return {...state, messagePages: {...state.messagePages, [action.id]: [...action.page.content]}}
+        case FETCH_UNREAD_MESSAGES_COUNT_RESPONSE:
+            return {...state, unreadMessagesCount: action.count}
         default:
             return state
     }

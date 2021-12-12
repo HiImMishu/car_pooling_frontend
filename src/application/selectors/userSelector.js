@@ -6,3 +6,4 @@ export const fetchedUserSelector = state => state.userReducer.fetchedUser
 export const notificationsSelector = state => state.userReducer.notifications
 export const initialMessagesSelector = state => state.userReducer.initialMessages
 export const messagesSelector = state => state.userReducer.messagePages
+export const unreadCountSelector = state => state.userReducer.unreadMessagesCount

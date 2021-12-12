@@ -1,12 +1,12 @@
-const LeftMessageComponent = () => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric' };
+const LeftMessageComponent = ({message}) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric' }
 
     return <div className="message-l message-left">
         <span className="message-timestamp message-timestamp-left">
-            {new Date().toLocaleString("pl-PL", options)}
+            {new Date(message.messageDate).toLocaleString("pl-PL", options)}
         </span>
         <p>
-            Cześć, czy mogę zabrać walizkę podczas wyjazdu do Warszawy? Bo wczoraj nie miałem takiej mozliwości przez telefon no i nie zapytałem
+            {message.content}
         </p>
     </div>
 }

@@ -1,8 +1,9 @@
-import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, FETCH_USER_BY_ID_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE, NOTIFICATION_IS_READ, ADD_NOTIFICATION, FETCH_INITIAL_MESSAGES_RESULT } from "../actions/userAction";
+import { CLEAR_LOGIN_USER_RESPONSE, FETCH_USER_RESPONSE, FETCH_USER_BY_ID_RESPONSE, INITIALIZE_TOKEN, LOGIN_USER_RESPONSE, LOGOUT, REGISTER_USER_RESPONSE, NOTIFICATION_IS_READ, ADD_NOTIFICATION, FETCH_INITIAL_MESSAGES_RESULT, FETCH_PAGE_OF_MESSAGES_RESPONSE } from "../actions/userAction";
 
 const initialState = {
     token: null,
-    notifications: []
+    notifications: [],
+    messagePages: {}
 }
 
 const userReducer = (state = initialState, action) => {
@@ -28,6 +29,8 @@ const userReducer = (state = initialState, action) => {
             return {...state, notifications: [...state.notifications.filter(n => parseInt(n.id) !== parseInt(notification.id)), notification]}
         case FETCH_INITIAL_MESSAGES_RESULT:
             return {...state, initialMessages: action.initialMessages}
+        case FETCH_PAGE_OF_MESSAGES_RESPONSE:
+            return {...state, messagePages: {...state.messagePages, [action.id]: [...action.page.content]}}
         default:
             return state
     }

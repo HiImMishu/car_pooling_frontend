@@ -198,6 +198,32 @@ const fetchInitialMessages = async (token) => {
         })
 }
 
+const fetchPageOfMessages = async (token, id, size, number) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.get(`${BASE_URL}/messages/${id}?size=${size}&number=${number}`, config)
+        .then(res => {
+            return {
+                status: res.status,
+                messages: res.data
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -226,7 +252,8 @@ const userApi = {
     updateRating,
     addRating,
     dismissNotification,
-    fetchInitialMessages
+    fetchInitialMessages,
+    fetchPageOfMessages
 }
 
 export default userApi

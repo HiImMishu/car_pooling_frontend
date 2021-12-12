@@ -17,6 +17,8 @@ export const NOTIFICATION_IS_READ = 'NOTIFICATION_IS_READ'
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
 export const FETCH_INITIAL_MESSAGES = 'FETCH_INITIAL_MESSAGES'
 export const FETCH_INITIAL_MESSAGES_RESULT = 'FETCH_INITIAL_MESSAGES_RESULT'
+export const FETCH_PAGE_OF_MESSAGES = 'FETCH_PAGE_OF_MESSAGES'
+export const FETCH_PAGE_OF_MESSAGES_RESPONSE = 'FETCH_PAGE_OF_MESSAGES_RESPONSE'
 
 export const registerUser = payload => ({
     type: REGISTER_USER,
@@ -113,4 +115,18 @@ export const fetchInitialMessages = (token) => ({
 export const fetchInitialMessagesResult = (messages) => ({
     type: FETCH_INITIAL_MESSAGES_RESULT,
     initialMessages: messages
+})
+
+export const fetchPageOfMessages = (token, pageSize, pageNumber, conversationId) => ({
+    type: FETCH_PAGE_OF_MESSAGES,
+    token: token,
+    size: pageSize,
+    number: pageNumber,
+    id: conversationId
+})
+
+export const fetchPageOfMessagesResponse = (response) => ({
+    type: FETCH_PAGE_OF_MESSAGES_RESPONSE,
+    page: response.messages,
+    id: response.id
 })

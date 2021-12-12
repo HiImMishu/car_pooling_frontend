@@ -14,8 +14,8 @@ const UserMessageItemComponent = ({selectedItem, setSelectedItem, message}) => {
     return <>
         <ListItem 
             button 
-            selected={selectedItem === message.id}
-            onClick={() => setSelectedItem(message.id)}
+            selected={selectedItem === message.sender.id}
+            onClick={() => setSelectedItem(message.sender.id)}
             alignItems="flex-start"
         >
             <ListItemAvatar>

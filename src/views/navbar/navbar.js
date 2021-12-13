@@ -168,7 +168,7 @@ const Navbar = () => {
             </IconButton>
             <p>Dodaj przejazd</p>
         </MenuItem>
-        {authenticated && <MenuItem component={Link} to="/messages">
+        {authenticated && <MenuItem component={Link} to="/messages/-1">
             <IconButton color="inherit">
             <Badge badgeContent={unreadCount} color="secondary">
                 <Mail />
@@ -215,7 +215,7 @@ const Navbar = () => {
                         <Button component={Link} to="/" color="inherit"><Search/> Wyszukaj przejazd</Button>
                         <Button component={Link} to="/add-trip" color="inherit"><Add/> Dodaj przejazd</Button>
                         {authenticated && <>
-                            <IconButton  component={Link} to="/messages" color="inherit">
+                            <IconButton  component={Link} to="/messages/-1" color="inherit">
                             <Badge badgeContent={unreadCount} color="secondary">
                                 <Mail />
                             </Badge>

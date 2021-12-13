@@ -1,6 +1,6 @@
 import { showAllert } from "../actions/alertActions";
 import { fetchTripById } from "../actions/tripActions";
-import { ADD_RATING, fetchInitialMessagesResult, fetchPageOfMessagesResponse, fetchUnreadMessagesCount, fetchUnreadMessagesCountResponse, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_INITIAL_MESSAGES, FETCH_PAGE_OF_MESSAGES, FETCH_UNREAD_MESSAGES_COUNT, FETCH_USER, FETCH_USER_BY_ID, loginResponse, LOGIN_USER, logout, MARK_THREAD_AS_READ, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
+import { ADD_MESSAGE, ADD_RATING, fetchInitialMessages, fetchInitialMessagesResult, fetchPageOfMessagesResponse, fetchUnreadMessagesCount, fetchUnreadMessagesCountResponse, fetchUser, fetchUserByIdResponse, fetchUserResponse, FETCH_INITIAL_MESSAGES, FETCH_PAGE_OF_MESSAGES, FETCH_UNREAD_MESSAGES_COUNT, FETCH_USER, FETCH_USER_BY_ID, GOT_MESSAGE, loginResponse, LOGIN_USER, logout, MARK_THREAD_AS_READ, notificationIsRead, READ_NOTIFICATION, registerUserResponse, REGISTER_USER, sendMessageResponse, UPDATE_RATING, UPDATE_USER } from "../actions/userAction";
 
 const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
     switch(action.type) {
@@ -127,6 +127,20 @@ const registerUserFlow = ({api}) => ({dispatch}) => next => action => {
                         dispatch(fetchUnreadMessagesCount(action.token))
                     }
                 })
+            break
+        case ADD_MESSAGE:
+            api.userApi.sendMessage(action.token, action.message)
+                .then(res => {
+                    if (res.status === 401) {
+                        dispatch(logout)
+                    } else if (res.status === 201) {
+                        dispatch(fetchInitialMessages(action.token))
+                        dispatch(sendMessageResponse(res.message))
+                    }
+                })
+            break
+        case GOT_MESSAGE:
+            dispatch(fetchInitialMessages(action.token))
             break
         default:
             break

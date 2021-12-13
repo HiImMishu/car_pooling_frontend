@@ -275,6 +275,32 @@ const markThreadAsRead = async (token, threadId) => {
         })
 }
 
+const sendMessage = async (token, message) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    return await axios.post(`${BASE_URL}/messages`, message, config)
+        .then(res => {
+            return {
+                status: res.status,
+                message: res.data
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status) {
+                return {
+                    status: err.response.status
+                }
+            } else {
+                return {
+                    status: -1
+                }
+            }
+        })
+}
+
 const mapUserRegistrationBody = (payload) => {
     return {
         firstName: payload.firstName,
@@ -306,7 +332,8 @@ const userApi = {
     fetchInitialMessages,
     fetchPageOfMessages,
     fetchUnreadMessagesCount,
-    markThreadAsRead
+    markThreadAsRead,
+    sendMessage
 }
 
 export default userApi

@@ -22,7 +22,7 @@ import { Close } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { closeAlert } from './application/actions/alertActions';
 import { tokenSelector } from './application/selectors/userSelector';
-import { addNotification, fetchUnreadMessagesCount, fetchUser, initializeToken } from './application/actions/userAction';
+import { addNotification, fetchInitialMessages, fetchUnreadMessagesCount, fetchUser, gotMessage, initializeToken } from './application/actions/userAction';
 import PrivateRoute from './privateRoute';
 import EnrolledTripsComponent from './views/enrolledTrips/enrolledTripsComponent';
 import PastTripsComponent from './views/pastTrips/pastTripsComponent';
@@ -54,11 +54,15 @@ function App() {
   useEffect(() => {
     if (socket !== null && token && !stompClient?.connected) {
       const client = Stomp.over(socket)
+      client.debug = null
       setStompClient(client)
 
       client.connect({"X-Authorization": "Bearer " + token}, _frame => {
         client.subscribe(`/user/queue/notifications`, message => {
           dispatch(addNotification(message.body))
+        })
+        client.subscribe(`/user/queue/messages`, message => {
+          dispatch(gotMessage(message.body, token))
         })
       })
     } 
@@ -79,6 +83,7 @@ function App() {
       if (token) {
         dispatch(fetchUser(token))
         dispatch(fetchUnreadMessagesCount(token))
+        dispatch(fetchInitialMessages(token))
       }
       if(token === null && stompClient?.connected) {
         stompClient.disconnect(null, {"X-Authorization": "Bearer " + localToken})
@@ -141,7 +146,7 @@ function App() {
             <PrivateRoute exact path="/my-trips" component={UserTripsComponent}/>
             <PrivateRoute exact path="/past-trips" component={PastTripsComponent}/>
             <PrivateRoute exact path="/my-enrollments" component={EnrolledTripsComponent}/>
-            <PrivateRoute exact path="/messages" component={MessagesComponent}/>
+            <PrivateRoute exact path="/messages/:id" component={MessagesComponent}/>
             <Route exact path="/login">
               <LoginComponent/>
             </Route>

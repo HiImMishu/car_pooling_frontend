@@ -1,4 +1,6 @@
 import { Divider, ListItem, ListItemAvatar, ListItemText, Avatar, makeStyles } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { activeUserSelector } from "../../application/selectors/userSelector";
 import defaultAvatar from '../../assets/images/default-avatar.jpg';
 
 const useStyles = makeStyles(() => ({
@@ -10,12 +12,14 @@ const useStyles = makeStyles(() => ({
 
 const UserMessageItemComponent = ({selectedItem, setSelectedItem, message}) => {
     const styles = useStyles()
+    const activeUser = useSelector(activeUserSelector)
+    const isFirst = activeUser?.id === message.sender.id
 
     return <>
         <ListItem 
             button 
-            selected={selectedItem === message.sender.id}
-            onClick={() => setSelectedItem(message.sender.id)}
+            selected={selectedItem === parseInt(isFirst ? message.recipient.id : message.sender.id)}
+            onClick={() => setSelectedItem(isFirst ? message.recipient.id : message.sender.id)}
             alignItems="flex-start"
         >
             <ListItemAvatar>
@@ -24,9 +28,9 @@ const UserMessageItemComponent = ({selectedItem, setSelectedItem, message}) => {
             <ListItemText
                 className="hide-sm"
                 classes={{
-                    secondary: !message.isRead ? styles.secondary : ""
+                    secondary: (!isFirst && !message.isRead) ? styles.secondary : ""
                 }}
-                primary={`${message.sender.firstName}  ${message.sender.lastName}`}
+                primary={`${isFirst ? message.recipient.firstName : message.sender.firstName}  ${isFirst ? message.recipient.lastName : message.sender.lastName}`}
                 secondary={message.content > 100 ? message.content.substr(0, 56) + "..." : message.content}
             />
         </ListItem>

@@ -200,7 +200,7 @@ const TripComponent = () => {
             {trip?.description}
         </section>
         {!isOwner &&
-        <section className="driver-contact">
+        <section className="driver-contact" onClick={() => history.push(`/messages/${trip?.owner?.id}`)}>
             <ForumOutlined className="chat-icon"/> 
             <p>Skontaktuj się z kierowcą</p>
         </section>}
